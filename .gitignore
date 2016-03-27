@@ -31,3 +31,13 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+
+# Modules
+*.symvers
+*.mod.c
+*.o
+*.ko
+*.cmd
+.tmp_versions
+Module.symvers
+modules.order
