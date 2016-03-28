@@ -1,0 +1,44 @@
+{
+  "name": "firewow",
+  "version": "1.0.0",
+  "description": "FireWOW Module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "./node_modules/bower/bin/bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firewow/firewow.git"
+  },
+  "keywords": [
+    "firewall",
+    "netfilter",
+    "iptables"
+  ],
+  "authors": [
+    "João F. Biondo Trinca <wolfulus@gmail.com>",
+    "Augusto F. Russo <augustopaladin@gmail.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/firewow/firewow/issues"
+  },
+  "homepage": "https://github.com/firewow/firewow#readme",
+  "dependencies": {
+    "babel-plugin-syntax-decorators": "^6.5.0",
+    "babel-plugin-transform-runtime": "^6.6.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.7.2",
+    "bower": "^1.7.7",
+    "consolidate": "^0.14.0",
+    "express": "^4.13.4",
+    "history": "^2.0.1",
+    "html-webpack-plugin": "^2.14.0",
+    "react-router": "^2.0.1",
+    "webpack": "^1.12.14",
+    "webpack-hot-middleware": "^2.10.0"
+  }
+}

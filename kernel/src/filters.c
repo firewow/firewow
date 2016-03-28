@@ -46,7 +46,7 @@ unsigned int fwow_filter_out(
 }
 
 /**
- * Filters initialization
+ * Initialization
  */
 void fwow_filters_initialize(void)
 {
@@ -66,7 +66,7 @@ void fwow_filters_initialize(void)
 }
 
 /**
- * Filter cleanup
+ * Cleanup
  */
 void fwow_filters_cleanup(void)
 {

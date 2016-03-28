@@ -1,0 +1,27 @@
+{
+  "name": "firewow",
+  "description": "firewow project",
+  "main": "",
+  "authors": [
+    "WoLfulus <wolfulus@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "frontend",
+    "boilerplate"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.0"
+  }
+}

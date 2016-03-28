@@ -20,6 +20,7 @@
 #include <linux/vmalloc.h>
 #include <asm/uaccess.h>
 
+#include "comm.h"
 #include "utils.h"
 #include "filters.h"
 
@@ -34,20 +35,26 @@ MODULE_DESCRIPTION("FireWOW Module");
 /**
  * Module initialization
  */
-int init_module(void)
+int fwow_init(void)
 {
-	debug("FireWOW initialization started.");
+	debug("Initialization started.");
 	fwow_filters_initialize();
-	debug("FireWOW initialization finished.");
-	return 0; /* ==0: success, !=0: failed */
+	fwow_comm_initialize();
+	debug("Initialization finished.");
+	return 0;
 }
+
+module_init(fwow_init);
 
 /**
  * Module cleanup
  */
-void cleanup_module(void)
+void fwow_exit(void)
 {
-	debug("FireWOW cleanup started.");
+	debug("Cleanup started.");
 	fwow_filters_cleanup();
-	debug("FireWOW cleanup finished.");
+	fwow_comm_cleanup();
+	debug("Cleanup finished.");
 }
+
+module_exit(fwow_exit);

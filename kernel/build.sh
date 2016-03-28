@@ -18,7 +18,8 @@ make &>> ./build.log
 
 # Sanity check
 if [[ $? -ne 0 ]]; then
-	printf "${ERROR} ERROR!\n"
+	printf "${ERROR} ERROR!\n${NC}"
+	cat ./build.log
 	exit 1
 else
 	printf "${SUCCESS} success!\n"
