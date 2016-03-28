@@ -1,32 +1,21 @@
 "use strict";
 
+/**
+ * Development check
+ */
+var development = false;
+if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
+	development = true;
+}
+
+/**
+ * Imports
+ */
 var fs = require('fs');
 var path = require('path');
 var webpack = require('webpack');
 var hotMiddlewareScript = 'webpack-hot-middleware/client?quiet=true';
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-
-var development = true;
-if (process.env.NODE_ENV && process.env.NODE_ENV === 'production') {
-	development = false;
-}
-
-/**
- * Merge
- */
-
-function merge() {
-	var retval = {};
-	for (var arg in arguments) {
-		if (typeof arguments[arg] !== "object") {
-			continue;
-		}
-		for (var attr in arguments[arg]) {
-			retval[attr] = JSON.stringify(arguments[arg][attr]);
-		}
-	}
-	return retval;
-}
 
 /**
  * Webpack Configuration File
@@ -41,6 +30,11 @@ module.exports = {
 	cache: true,
 
 	/**
+	 * Context
+	 */
+	context: __dirname,
+
+	/**
 	 * Debug information
 	 */
 
@@ -51,9 +45,9 @@ module.exports = {
 	 * Entry point
 	 */
 
-	entry: [
+	entry: {
 		"main": path.join(__dirname, "web/client/client.js")
-	],
+	},
 
 	/**
 	 * Output configuration
@@ -61,9 +55,9 @@ module.exports = {
 
 	output: {
 		path: path.join(__dirname, "web/assets"),
-		publicPath: "/",
 		filename: "[name]-[hash].js",
-		chunkFilename: "[chunkhash].js"
+		chunkFilename: "[chunkhash].js",
+		publicPath: "/"
 	},
 
 	/**
@@ -78,43 +72,52 @@ module.exports = {
 
 		loaders: [
 
-			/**
-			 * Images
-			 */
+		/**
+		 * Fonts
+		 */
 
-			{test: /\.(png|jpg|jpeg|gif)$/, loader: "url?limit=8192"},
+			{test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/i, loader: "url?limit=512&mimetype=application/font-woff"},
+			{test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/i, loader: "url?limit=512&mimetype=application/octet-stream"},
+			{test: /\.eot(\?v=\d+\.\d+\.\d+)?$/i, loader: "file"},
+			{test: /\.svg(\?v=\d+\.\d+\.\d+)?$/i, loader: "url?limit=512&mimetype=image/svg+xml"},
 
-			/**
-			 * Stylesheets
-			 */
+		/**
+		 * Images
+		 */
 
-			{test: /\.css$/, loaders: ["style", "css"]},
+			{test: /\.(png|jpe?g|gif)$/i, loader: "url?limit=512"},
+			{test: /\.svg$/i, loader: "url?limit=512&mimetype=image/svg+xml"},
 
-			/**
-			 * Less
-			 */
+		/**
+		 * Stylesheets
+		 */
 
-			{test: /\.less$/, loaders: ["style", "css", "less"]},
+			{test: /\.css$/i, loaders: ["style", "css"]},
 
-			/**
-			 * Sass
-			 */
+		/**
+		 * Less
+		 */
 
-			{test: /\.scss$/, loaders: ["style", "css", "sass"]},
+			{test: /\.less$/i, loaders: ["style", "css", "less"]},
 
-			/**
-			 * Json
-			 */
+		/**
+		 * Sass
+		 */
 
-			{test: /\.json$/, loaders: ["json"]},
+			{test: /\.scss$/i, loaders: ["style", "css", "sass"]},
 
-			/**
-			 * React
-			 */
+		/**
+		 * Json
+		 */
+			{test: /\.json$/i, loader: "json"},
+
+		/**
+		 * React
+		 */
 
 			{
-				test: /\.jsx?$/,
-				loader: "babel",
+				test: /\.jsx?$/i,
+				loaders: ["react-hot", "babel"],
 				exclude: /(node_modules)/
 			}
 		]
@@ -128,6 +131,17 @@ module.exports = {
 		root: [
 			path.join(__dirname, "web/client"),
 			path.join(__dirname, "bower_components")
+		],
+		alias: {
+			"jQuery": "jquery"
+		}
+	},
+
+	sassLoader: {
+		includePaths: [
+			path.resolve(__dirname, "./node_modules"),
+			path.resolve(__dirname, "./bower_components"),
+			path.resolve(__dirname, "./web/client/styles")
 		]
 	},
 
@@ -137,42 +151,42 @@ module.exports = {
 
 	plugins: [
 
-		/**
-		 * Bower support
-		 */
+	/**
+	 * Bower support
+	 */
 		new webpack.ResolverPlugin(
 			new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
 		),
 
-		/**
-		 * Fix file watch for updates
-		 */
+	/**
+	 * Fix file watch for updates
+	 */
 		new webpack.OldWatchingPlugin(),
 
-		/**
-		 * Code banner
-		 */
+	/**
+	 * Code banner
+	 */
 
-		new webpack.BannerPlugin("FireWOW Project"),
+		new webpack.BannerPlugin("FireWOW"),
 
-		/**
-		 * Definitions
-		 */
+	/**
+	 * Definitions
+	 */
 
-		new webpack.DefinePlugin(merge({
-			"DEBUG": JSON.stringify(development),
+		new webpack.DefinePlugin({
+			"DEBUG": development,
 			"process.env": {
 				"NODE_ENV": development ? JSON.stringify("development") : JSON.stringify("production")
 			}
 		}),
 
-		/**
-		 * Resolves a module based on the variable accessed
-		 */
+	/**
+	 * Resolves a module based on the variable accessed
+	 */
 
 		new webpack.ProvidePlugin({
 			$: "jquery",
-			jQuery: "jquery",
+			"jQuery": "jquery",
 			"window.jQuery": "jquery",
 			"React": "react",
 			"ReactDOM": "react-dom"
@@ -184,22 +198,30 @@ module.exports = {
 
 		function() {
 			this.plugin("done", function(stats) {
+
+				var name = '';
+				var json = stats.toJson();
 				var name = json.assetsByChunkName['main'];
 				if (Array.isArray(name)) {
 					name = name[0];
 				}
+
 				var contents =
 					"<!DOCTYPE html>\n" +
-					"<html>\n" +
+					"<html lang=\"pt-br\">\n" +
 					"	<head>\n" +
 					"		<meta charset=\"UTF-8\">\n" +
+					"		<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
 					"		<title>FireWOW</title>\n" +
+					//"		<script src=\"https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.js\"></script>" +
+					//"		<script src=\"https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.js\"></script>" +
 					"	</head>\n" +
 					"	<body>\n" +
 					"		<div id=\"root\"></div>\n" +
-					"		<script type=\"text/javascript\" src=\"" + name + "\"></script>\n";
+					"		<script type=\"text/javascript\" src=\"/" + name + "\"></script>\n" +
 					"	</body>\n" +
 					"</html>";
+
 
 				fs.writeFileSync(
 					path.join(__dirname, "web/assets/index.html"), contents
@@ -212,14 +234,15 @@ module.exports = {
 /**
  * Adjust
  */
+
 if (development) {
 
 	// Add hot reload middleware to entries
 	for (var entry in module.exports.entry) {
 		if (Array.isArray(module.exports.entry[entry])) {
-			module.exports.entry[entry].push(hotMiddlewareScript);
+			module.exports.entry[entry].unshift(hotMiddlewareScript);
 		} else {
-			module.exports.entry[entry] = [module.exports.entry[entry], hotMiddlewareScript]
+			module.exports.entry[entry] = [hotMiddlewareScript, module.exports.entry[entry]]
 		}
 	}
 
@@ -234,8 +257,22 @@ if (development) {
 	module.exports.plugins.push(
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.UglifyJsPlugin({
+			sourceMap: false,
 			compress: {
-				warnings: false
+				warnings: false,
+				sequences: true,
+				dead_code: true,
+				conditionals: true,
+				booleans: true,
+				unused: true,
+				if_return: true,
+				join_vars: true
+			},
+			mangle: {
+				except: ['$super', '$', 'exports', 'require']
+			},
+			output: {
+				comments: false
 			}
 		})
 	);

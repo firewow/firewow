@@ -1,14 +1,37 @@
-import 'styles/main.css';
+/**
+ * Materialize
+ */
+import 'materialize-css/bin/materialize.css';
+import 'materialize-css/bin/materialize.js';
 
+/**
+ * Styles
+ */
+import 'styles/main.scss';
+
+/**
+ * React
+ */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Application from 'components/application';
-import { Router, Route, IndexRoute } from 'react-router'
+import { Router, useRouterHistory } from 'react-router';
+import { createHistory } from 'history'
+import routes from './routes';
 
-ReactDOM.render(
-	<Router history={createHistory}>
-		<Route path="/" component={Application}>
-		</Route>
-	</Router>,
-	document.getElementById('root')
-);
+/**
+ * Render
+ */
+if (typeof document !== 'undefined' && window) {
+	window.onload = () => {
+		const appHistory = useRouterHistory(createHistory)({ queryKey: false })
+		ReactDOM.render(
+			<Router history={appHistory}>
+				{routes}
+			</Router>
+		, document.getElementById('root'));
+	};
+}
+
+if (module.hot) {
+	module.hot.accept();
+}

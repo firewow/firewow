@@ -42,3 +42,6 @@ bower_components
 .tmp_versions
 Module.symvers
 modules.order
+
+web/assets/*
+!web/assets/.keep
