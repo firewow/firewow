@@ -4,13 +4,14 @@
 import { Router, Route, IndexRoute } from 'react-router'
 
 import Application from 'components/application'
-import Home from 'components/pages/home'
+import Login from 'components/pages/login'
 
 /**
  * Router export
  */
+
 export default (
 	<Route component={Application} path="/">
-  		<IndexRoute component={Home} />
+  		<IndexRoute component={Login} />
 	</Route>
 );

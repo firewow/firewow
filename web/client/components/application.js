@@ -8,8 +8,8 @@ export default class Application extends React.Component {
 	 */
 	render() {
 		return (
-			<div className="container">
-				FireWOW
+			<div className="app">
+				{this.props.children}
 			</div>
 		);
 	}

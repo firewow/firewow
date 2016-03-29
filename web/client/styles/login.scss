@@ -1,0 +1,44 @@
+/**
+ * SCSS Document
+ * Created: 2016-03-29
+ * Login screen style
+ * @author Augusto Russo
+ */
+
+/**
+ * Imports
+ */
+@import 'mixins.scss';
+
+/**
+ * Rules
+ */
+#login {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  cursor: default;
+}
+
+#login .material-icons {
+  color: white;
+  @include transition(.3s);
+}
+
+#login .material-icons.active, #login label.active {
+  color: #FF9800;
+}
+
+#login input[type=text]:focus, #login input[type=password]:focus {
+  border-color: white;
+  -webkit-box-shadow: 0 1px 0 0 white;
+  -moz-box-shadow: 0 1px 0 0 white;
+  box-shadow: 0 1px 0 0 white;
+}
+
+#login input[type=text], #login input[type=password] {
+  color: white;
+}

@@ -1,0 +1,16 @@
+/**
+ * SCSS Document
+ * Created: 2016-03-29
+ * Useful mixins
+ * @author Augusto Russo
+ */
+
+@mixin transition($time) {
+
+  -webkit-transition: $time;
+     -moz-transition: $time;
+       -o-transition: $time;
+      -ms-transition: $time;
+          transition: $time;
+
+}

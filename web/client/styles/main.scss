@@ -1,3 +1,70 @@
 /**
- * Custom styles
+ * SCSS Document
+ * Created: 2016-03-29
+ * General css
+ * @author João Biondo Trinca
  */
+
+/**
+ * Fonts
+ */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(http://fonts.gstatic.com/s/materialicons/v14/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2) format('woff2');
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Firewow Logo
+ */
+.firewow-logo {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 1em;
+  text-align: center;
+  color: #FF9800;
+}
+
+.firewow-logo p {
+  margin: 0;
+  padding: 0;
+}
+
+.firewow-logo i {
+  font-size: 3em;
+  color: #FF9800 !important;
+}
+
+/**
+ * Helpers
+ */
+.center {
+  margin: 0 auto;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version for future */
+}
