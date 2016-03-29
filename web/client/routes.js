@@ -4,14 +4,15 @@
 import { Router, Route, IndexRoute } from 'react-router'
 
 import Application from 'components/application'
-import Login from 'components/pages/login'
+import Rules from 'components/pages/rules'
 
 /**
  * Router export
  */
 
 export default (
-	<Route component={Application} path="/">
-  		<IndexRoute component={Login} />
-	</Route>
+    <Route component={Application} path="/">
+        <IndexRoute component={Rules} />
+        <Route component={Rules} path="rules" />
+    </Route>
 );

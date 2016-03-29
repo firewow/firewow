@@ -27,7 +27,8 @@
   },
   "homepage": "https://github.com/firewow/firewow#readme",
   "dependencies": {
-    "alt": "^0.18.4",
+    "alt": "^0.17.9",
+    "axios": "^0.9.1",
     "babel": "^6.5.2",
     "babel-core": "^6.7.4",
     "babel-loader": "^6.2.4",

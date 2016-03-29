@@ -25,7 +25,7 @@ var app = express();
 if (development) {
 	var webpackCompiler = webpack(webpackConfig);
 	app.use(webpackDevMiddleware(webpackCompiler, {
-		noInfo: true,
+		colors: true,
 		publicPath: webpackConfig.output.publicPath
 	}));
 
