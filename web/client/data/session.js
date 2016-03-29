@@ -196,7 +196,7 @@ class SessionStore {
      */
     restore() {
         if (sessionStorage.session) {
-            this.data = JSON.parse(sessionStorage.session);
+            this.session = JSON.parse(sessionStorage.session);
         }
     }
 }
