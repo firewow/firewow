@@ -35,22 +35,25 @@
  * Firewow Logo
  */
 .firewow-logo {
-  position: absolute;
-  top: 15px;
-  left: 15px;
+  position: relative;
+  top: -50px;
+  left: 0;
+  right: 0;
   font-size: 1em;
   text-align: center;
-  color: #FF9800;
 }
 
-.firewow-logo p {
-  margin: 0;
-  padding: 0;
-}
+/**
+ * Custom elements
+ */
+.raw-button {
+    font-size: 2.5em;
+    cursor: pointer;
+    color: white;
 
-.firewow-logo i {
-  font-size: 3em;
-  color: #FF9800 !important;
+    &:hover {
+        color: #8BC34A !important;
+    }
 }
 
 /**
@@ -67,4 +70,8 @@
   -moz-user-select: none;      /* Firefox */
   -ms-user-select: none;       /* IE/Edge */
   user-select: none;           /* non-prefixed version for future */
+}
+
+.padding-1x {
+    padding: 1em;
 }

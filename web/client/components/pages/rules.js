@@ -1,6 +1,7 @@
 /**
  * Imports
  */
+require("jquery-ui/jquery-ui.js");
 
 /**
  * Class
