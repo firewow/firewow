@@ -39,6 +39,10 @@ if (development) {
  */
 app.use(express.static(path.resolve(__dirname, "../assets")));
 
+app.get('*', function(request, response) {
+    response.sendFile(path.join(__dirname, "../assets/index.html"));
+});
+
 /**
  * Not found
  */

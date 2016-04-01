@@ -1,0 +1,60 @@
+/**
+ * SCSS Document
+ * Created: 2016-03-29
+ * Login screen style
+ * @author Augusto Russo
+ */
+
+/**
+ * Imports
+ */
+@import 'mixins.scss';
+
+/**
+ * Rules
+ */
+.home {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    cursor: default;
+
+    .menu {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: stretch;
+
+        .menu-divider {
+            flex-grow: 1;
+
+            .menu-item {
+                padding: 60px;
+            }
+
+            .vertical {
+                background-color: rgb(70, 47, 187);
+                flex-basis: 10;
+                height: 100%;
+                margin: 5px;
+                line-height: 12em;
+            }
+
+            .horizontal {
+                flex: 1 0;
+                background-color: rgb(219, 106, 72);
+            }
+
+            .horizontal:first-child {
+                margin: 5px 5px 5px 0px;
+            }
+
+            .horizontal:nth-child(2) {
+                margin: 5px 5px -5px 0px;
+            }
+        }
+    }
+}

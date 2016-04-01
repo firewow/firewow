@@ -44,3 +44,40 @@
     }
 
 }
+
+.login-form {
+    overflow: auto;
+    padding: 30px 30px 30px 15px !important;
+    @include borderRadius(3px);
+}
+
+/* SMARTPHONES */
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+    .valign-wrapper {
+        display: block;
+    }
+
+    .login-form {
+        margin-top: 100px;
+    }
+
+    .login {
+        overflow: auto;
+    }
+
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px)  {
+    .valign-wrapper {
+        display: block;
+    }
+
+    .login-form {
+        margin-top: 100px;
+    }
+
+    .login {
+        overflow: auto;
+    }
+
+}

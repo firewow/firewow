@@ -17,13 +17,13 @@ import ReactDOM from 'react-dom';
 import { Router, useRouterHistory } from 'react-router';
 import { createHistory } from 'history'
 import routes from './routes';
+import appHistory from 'apphistory'
 
 /**
  * Render
  */
 if (typeof document !== 'undefined' && window) {
 	window.onload = () => {
-		const appHistory = useRouterHistory(createHistory)({ queryKey: false })
 		ReactDOM.render(
 			<Router history={appHistory}>
 				{routes}

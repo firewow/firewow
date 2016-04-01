@@ -72,11 +72,18 @@ class SessionActions {
      * Session validation
      */
     validate() {
+        setImmediate(() => {
+            this.actions.validateSuccess({
+                user: 'root'
+            });
+        });
+        /*
         axios.get('/validate').then((response) => {
             this.actions.validateSuccess(response.data);
         }).catch((error) => {
             this.actions.validateFailed(error);
         });
+        */
         this.dispatch();
     }
 
@@ -105,7 +112,7 @@ class SessionStore {
     /**
      * Constructor
      */
-    construct() {
+    constructor() {
         this.session = false;
         this.error = false;
         this.restore();
@@ -187,6 +194,7 @@ class SessionStore {
      * Session save
      */
     save() {
+        console.log('save');
         sessionStorage.session = JSON.stringify(this.session);
     }
 
@@ -195,6 +203,7 @@ class SessionStore {
      * @return {[type]} [description]
      */
     restore() {
+        console.log('restore');
         if (sessionStorage.session) {
             this.session = JSON.parse(sessionStorage.session);
         }

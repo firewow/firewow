@@ -5,6 +5,11 @@
  * @author João Biondo Trinca
  */
 
+ /**
+  * Imports
+  */
+ @import 'mixins.scss';
+
 /**
  * Fonts
  */
@@ -37,10 +42,13 @@
 .firewow-logo {
   position: relative;
   top: -50px;
-  left: 0;
-  right: 0;
-  font-size: 1em;
-  text-align: center;
+  margin: 0 auto;
+  width: 411px;
+  height: 112px;
+  background-image: url('../images/logo.png');
+  background-size: 411px 112px;
+
+  @include transition(.3s);
 }
 
 /**
@@ -74,4 +82,31 @@
 
 .padding-1x {
     padding: 1em;
+}
+
+/**
+ * Responsive
+ */
+
+/* SMARTPHONES */
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+    .firewow-logo {
+        position: relative;
+        top: 50px;
+        margin: 0 auto;
+        width: 205px;
+        height: 55.863746959px;
+        background-size: 205px 55.863746959px;
+    }
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px)  {
+    .firewow-logo {
+        position: relative;
+        top: 50px;
+        margin: 0 auto;
+        width: 205px;
+        height: 55.863746959px;
+        background-size: 205px 55.863746959px;
+    }
 }
