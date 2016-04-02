@@ -2,17 +2,14 @@
  * Imports
  */
 import {Button, Icon, Row, Input} from 'react-materialize';
-import appHistory                 from 'apphistory';
-import RulesPanel                 from 'components/composition/rulesPanel';
+import appHistory                 from 'apphistory'
 
-import 'styles/rules.scss';
-
-require("jquery-ui/jquery-ui.js");
+//import 'styles/about.scss';
 
 /**
  * Class
  */
-export default class Rules extends React.Component {
+export default class About extends React.Component {
 
     constructor() {
         super();
@@ -33,9 +30,7 @@ export default class Rules extends React.Component {
 
                     <div className="valign firewow-logo"></div>
 
-                    <RulesPanel>
-
-                    </RulesPanel>
+                    <p className="welcome">About</p>
 
                 </Row>
             </div>

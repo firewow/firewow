@@ -22,6 +22,18 @@
     z-index: 10;
     cursor: default;
 
+    .firewow-logo {
+       position: absolute;
+       top: 15px;
+       left: 15px;
+   }
+
+    .welcome {
+        color: white;
+        text-transform: capitalize;
+        letter-spacing: .2rem;
+    }
+
     .menu {
         display: flex;
         flex-flow: row wrap;
@@ -33,10 +45,19 @@
 
             .menu-item {
                 padding: 60px;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: .1rem;
+                cursor: pointer;
+
+                @include transition(.3s);
+            }
+
+            .menu-item:hover {
+                color: #ff5722;
             }
 
             .vertical {
-                background-color: rgb(70, 47, 187);
                 flex-basis: 10;
                 height: 100%;
                 margin: 5px;
@@ -45,7 +66,6 @@
 
             .horizontal {
                 flex: 1 0;
-                background-color: rgb(219, 106, 72);
             }
 
             .horizontal:first-child {
@@ -57,4 +77,98 @@
             }
         }
     }
+}
+
+/**
+ * Responsive
+ */
+
+/* SMARTPHONES */
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+
+    .home {
+
+        overflow: auto;
+
+         .firewow-logo {
+            left: 0px;
+            right: 0px;
+        }
+
+        .welcome {
+            margin-top: 100px;
+        }
+
+        .valign-wrapper {
+            display: flex
+        }
+
+        .menu {
+            display: flex;
+            flex-flow: column-reverse;
+
+            .menu-divider {
+
+                .menu-item {
+                    max-height: 100px;
+                    line-height: 1em;
+                    padding: 30px;
+                }
+
+                .vertical, .horizontal {
+                    width: 100%;
+                }
+
+                .vertical {
+                    margin: 10px 5px 0px 0px;
+                }
+            }
+        }
+
+    }
+
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px)  {
+    .home {
+
+        overflow: auto;
+
+        .firewow-logo {
+            left: 0px;
+            right: 0px;
+        }
+
+        .welcome {
+            margin-top: 100px;
+        }
+
+        .valign-wrapper {
+            display: flex
+        }
+
+        .menu {
+            display: flex;
+            flex-flow: column-reverse;
+
+            .menu-divider {
+
+                .menu-item {
+                    max-height: 100px;
+                    line-height: 1em;
+                    padding: 30px;
+                }
+
+                .vertical, .horizontal {
+                    width: 100%;
+                }
+
+                .vertical {
+                    margin: 10px 5px 0px 0px;
+                }
+            }
+        }
+
+    }
+
 }

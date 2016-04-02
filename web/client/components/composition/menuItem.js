@@ -9,11 +9,11 @@ import React from 'react'
 export default class Menu extends React.Component {
 
     render() {
-        
-        var innerCssClass = 'menu-item ' + this.props.orientation;
+
+        var innerCssClass = 'menu-item ' + this.props.orientation + ' ' + this.props.color;
 
         return(
-            <div className={innerCssClass}>
+            <div className={innerCssClass} onClick={this.props.onClick}>
                 <p>{this.props.text}</p>
             </div>
         );
