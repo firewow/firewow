@@ -4,10 +4,9 @@
 import {Button, Icon, Row, Input} from 'react-materialize';
 import appHistory                 from 'apphistory';
 import RulesPanel                 from 'components/composition/rulesPanel';
+import RuleItem                   from 'components/composition/ruleItem'
 
 import 'styles/rules.scss';
-
-require("jquery-ui/jquery-ui.js");
 
 /**
  * Class
@@ -19,7 +18,7 @@ export default class Rules extends React.Component {
     }
 
     handleGoBack = () => {
-        appHistory.push("/home");
+        appHistory.push('/home');
     }
 
     /**
@@ -27,14 +26,16 @@ export default class Rules extends React.Component {
      */
     render() {
         return (
-            <div className="grey darken-3 noselect valign-wrapper rules">
+            <div className='grey darken-3 noselect valign-wrapper rules'>
 
-                <Row className="container row valign center padding-1x">
+                <Row className='container row valign center padding-1x'>
 
-                    <div className="valign firewow-logo"></div>
+                    <div className='valign firewow-logo'></div>
 
                     <RulesPanel>
-
+                        <RuleItem name='Rule 1'/>
+                        <RuleItem name='Rule 2'/>
+                        <RuleItem name='Rule 3'/>
                     </RulesPanel>
 
                 </Row>

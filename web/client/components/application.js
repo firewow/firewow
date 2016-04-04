@@ -32,6 +32,24 @@ export default class Application extends React.Component {
      * Mount
      */
     componentWillMount() {
+
+        var that = this;
+
+        var options = {
+            dataType: "script",
+            cache: true,
+            url: "https://www.google.com/jsapi",
+        };
+
+        jQuery.ajax(options).done(function(){
+            google.load("visualization", "1", {
+                packages:["corechart"],
+                callback: function() {
+                    that.startRenderingComponents();
+                }
+            });
+        });
+
         this.hookInterceptors();
         SessionStore.listen(this.handleSessionUpdate);
     }

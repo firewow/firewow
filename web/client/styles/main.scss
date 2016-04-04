@@ -84,6 +84,15 @@
     padding: 1em;
 }
 
+.esconder {
+    display: none !important;
+}
+
+.drag-rule-helper {
+    height: 50px;
+    background-color: #da7eff !important;
+}
+
 /**
  * Responsive
  */

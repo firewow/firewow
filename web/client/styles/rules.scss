@@ -14,12 +14,11 @@
  * Rules
  */
 .rules {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
-    z-index: 10;
     cursor: default;
 
     .firewow-logo {
@@ -28,6 +27,62 @@
        left: 15px;
    }
 
+   .modal {
+
+       .modal-content {
+           form {
+               padding: 55px;
+           }
+       }
+   }
+
+   .app-loader {
+       position: relative;
+
+       .done {
+           color: #4CAF50;
+           float: right;
+           margin-top: -70px;
+           border-radius: 100%;
+           overflow: hidden;
+           padding: 7px;
+           background-color: white;
+           height: 50px;
+           width: 50px;
+
+           i {
+               font-size: 2em;
+               line-height: 1.2em;
+           }
+       }
+
+       .loader {
+           float: right;
+           margin-top: -70px;
+           border-radius: 100%;
+           overflow: hidden;
+           padding: 7px;
+           background-color: white;
+           height: 50px;
+           width: 50px;
+
+           .loader-text {
+               color: white;
+               white-space: nowrap;
+               position: absolute;
+               margin-top: -35px;
+               margin-left: 50px;
+           }
+
+           .preloader-wrapper {
+               border-radius: 100%;
+           }
+       }
+
+   }
+
+
+
     .rules-panel {
         position: relative;
         display: block;
@@ -35,18 +90,90 @@
         .rules-action-bar {
             max-height: 50px;
             height: 50px;
+            padding: 5px;
 
             border-style: solid;
             border-color: #f44336;
             border-width: 1px;
+
+            ul {
+                display: inline-block;
+                float: right;
+                margin: 0;
+                height: 50px;
+                padding: 5px;
+            }
+
+            ul li i {
+                @include transition(.3s);
+                cursor: pointer;
+            }
+
+            ul li i:hover {
+                color: #FF9800;
+            }
+
+            div {
+                float: left;
+                height: 50px;
+                text-align: center;
+                line-height: 2.5em;
+            }
         }
 
-        .rules-list {
+        .rules-list-wrapper {
+
             border-style: solid;
-            border-color: white;
+            border-color: #f44336;
+            padding: 5px;
             border-width: 0px 1px 1px 1px;
-            min-height: 500px;
-            max-height: 500px;
+
+            .rules-list {
+                margin: 0;
+                width: 100%;
+                min-height: 500px;
+                max-height: 500px;
+                overflow: auto;
+
+                li {
+                    max-height: 50px;
+                    height: 50px;
+                    padding: 5px;
+                    background-color: #7e57c2;
+                    color: white;
+                    text-align: left;
+                    line-height: 2.7em;
+                    margin: 2px;
+
+                    .rule-actions {
+                        background-color: #512da8;
+                        float: right;
+                        height: 50px;
+                        padding: 8px;
+                        line-height: 3.2em;
+                        margin-top: -5px;
+                        margin-right: -5px;
+                        display: flex;
+                        align-items: center;
+
+                        i {
+                            margin: 0 5px 0 5px;
+                            cursor: pointer;
+                            @include transition(.3s);
+                        }
+
+                        i:hover {
+                            color: #7e57c2;
+                        }
+                    }
+                }
+            }
+        }
+
+        .rules-reminder {
+            color: white;
+            text-align: left;
+            padding: 10px;
         }
     }
 
