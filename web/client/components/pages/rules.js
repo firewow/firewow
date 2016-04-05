@@ -33,9 +33,9 @@ export default class Rules extends React.Component {
                     <div className='valign firewow-logo'></div>
 
                     <RulesPanel>
-                        <RuleItem name='Rule 1'/>
-                        <RuleItem name='Rule 2'/>
-                        <RuleItem name='Rule 3'/>
+                        <RuleItem className='accept' name='Rule 1'/>
+                        <RuleItem className='drop'   name='Rule 2'/>
+                        <RuleItem className='accept' name='Rule 3'/>
                     </RulesPanel>
 
                 </Row>

@@ -43,6 +43,12 @@ export default class RulesPanel extends React.Component {
 
     }
 
+    handleApplyChanges = () => {
+
+      //Apply...
+
+    }
+
     componentDidMount() {
 
         //Simulating loader
@@ -50,6 +56,7 @@ export default class RulesPanel extends React.Component {
 
         setTimeout(function() {
             panel.showLoader();
+            Materialize.toast('Suck me', 3000, 'rounded')
 
             setTimeout(function() {
                 panel.hideLoader();
@@ -142,11 +149,12 @@ export default class RulesPanel extends React.Component {
 
                 <Loader text="Processing changes" id="rulesPanelLoader" className="esconder"/>
 
-                <div className='rules-action-bar red white-text'>
+                <div className='rules-action-bar white grey darken-3-text'>
 
                     <div>RULES PANEL</div>
 
                     <ul>
+                        <li className="tooltipped" data-position="right" onClick={this.handleApplyChanges} data-tooltip="Apply changes"><Icon>backup</Icon></li>
                         <li className="tooltipped" data-position="right" onClick={this.handleRuleAdd} data-tooltip="Add a rule"><Icon>add_circle</Icon></li>
                     </ul>
 
@@ -163,7 +171,8 @@ export default class RulesPanel extends React.Component {
                 </div>
 
                 <div className="rules-reminder">
-                    <span>* The priority of the rules are given by their order in the list!</span>
+                    <span>* The priority of the rules are given by their order in the list.</span>
+                    <span>* Your rules will not work until you flush them.</span>
                 </div>
 
                 <Modal

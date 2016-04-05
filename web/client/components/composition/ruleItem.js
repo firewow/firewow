@@ -10,7 +10,7 @@ export default class RuleItem extends React.Component {
     render() {
 
         return (
-            <li>
+            <li className={this.props.className}>
                 <span>{this.props.name}</span>
 
                 <div className='rule-actions'>
