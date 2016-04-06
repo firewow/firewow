@@ -48,6 +48,10 @@ export default class Home extends React.Component {
         appHistory.push("/about");
     }
 
+    componentDidMount() {
+      $('.tooltipped').tooltip({delay: 50});
+    }
+
     /**
      * Render
      */
