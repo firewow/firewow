@@ -25,16 +25,9 @@
 #include "filters.h"
 
 /**
- * License
- */
-
-MODULE_LICENSE("MIT");
-MODULE_AUTHOR("João F. Biondo Trinca <wolfulus@gmail.com>");
-MODULE_DESCRIPTION("FireWOW Module");
-
-/**
  * Module initialization
  */
+
 int fwow_init(void)
 {
 	debug("Initialization started.");
@@ -44,17 +37,29 @@ int fwow_init(void)
 	return 0;
 }
 
-module_init(fwow_init);
-
 /**
  * Module cleanup
  */
+
 void fwow_exit(void)
 {
 	debug("Cleanup started.");
+    fwow_comm_cleanup();
 	fwow_filters_cleanup();
-	fwow_comm_cleanup();
 	debug("Cleanup finished.");
 }
 
+/**
+ * Register
+ */
+
+module_init(fwow_init);
 module_exit(fwow_exit);
+
+/**
+ * License
+ */
+
+MODULE_LICENSE("MIT");
+MODULE_AUTHOR("João F. Biondo Trinca <wolfulus@gmail.com>");
+MODULE_DESCRIPTION("FireWOW Module");

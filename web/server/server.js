@@ -5,13 +5,12 @@
 import 'colors'
 
 console.log((
-    "  _____  ____  ____     ___ __    __   ___   __    __ \n" +
-    " |     ||    ||    \\   /  _]  |__|  | /   \\ |  |__|  |\n" +
-    " |   __| |  | |  D  ) /  [_|  |  |  ||     ||  |  |  |\n" +
-    " |  |_   |  | |    / |    _]  |  |  ||  O  ||  |  |  |\n" +
-    " |   _]  |  | |    \\ |   [_|  `  '  ||     ||  `  '  |\n" +
-    " |  |    |  | |  .  \\|     |\\      / |     | \\      / \n" +
-    " |__|   |____||__|\\_||_____| \\_/\\_/   \\___/   \\_/\\_/  \n"
+    " ______ ___________ _____ _    _  _____  _    _ \n" +
+    " |  ___|_   _| ___ \\  ___| |  | ||  _  || |  | |\n" +
+    " | |_    | | | |_/ / |__ | |  | || | | || |  | |\n" +
+    " |  _|   | | |    /|  __|| |/\\| || | | || |/\\| |\n" +
+    " | |    _| |_| |\\ \\| |___\\  /\\  /\\ \\_/ /\\  /\\  /\n" +
+    " \\_|    \\___/\\_| \\_\\____/ \\/  \\/  \\___/  \\/  \\/ \n"
 ).magenta);
 
 /**
@@ -22,10 +21,10 @@ import fs from 'fs'
 import isRoot from 'is-root'
 
 if (!isRoot()) {
-	console.error('> This server requires sudo/root access.'.red);
+	console.error('> this server requires sudo/root access.'.red);
 	process.exit(-1);
 } else {
-	console.log('> Sudo access confirmed.'.green);
+	console.log('> sudo access confirmed.'.green);
 }
 
 /**
@@ -86,16 +85,16 @@ if (development) {
 	}));
 }
 
-
 /**
  * User check
  */
 var users = db('users').size();
 if (users <= 0) {
     db('users').push({ 'username': 'admin', 'password': 'admin' });
-} else {
-    console.log('> %d users loaded'.blue, users);
+    console.log('> created initial user `admin`'.green);
+    users = 1;
 }
+console.log('> %d users loaded'.blue, users);
 
 var rules = db('rules').size();
 console.log('> %d rules loaded'.blue, rules);
