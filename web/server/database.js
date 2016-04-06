@@ -4,17 +4,11 @@ import fs from 'fs'
 
 var databaseDirectory = '/etc/firewow';
 
-var stats = null;
-
+var db = null;
 try {
-    stats = fs.lstatSync(databaseDirectory);
+	db = low(databaseDirectory + '/db.json', { storage });
 } catch (e) {
-    try {
-        fs.mkdirSync(databaseDirectory);
-    } catch(e) {
-    }
+
 }
 
-
-const db = low(databaseDirectory + '/db.json', { storage });
 export default db;
