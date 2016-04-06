@@ -6,23 +6,24 @@ import { Icon, Input } from 'react-materialize';
 import Loader          from 'components/composition/loader'
 import Modal           from 'components/composition/modal'
 
-require("jquery-ui/jquery-ui.js");
-
 /**
  * Component
  */
 export default class RulesPanel extends React.Component {
 
     showLoader = () => {
-        $("#rulesPanelLoader").removeClass("esconder").hide();
-        $("#rulesPanelLoader").fadeIn();
+        var toastContent = $('#rulesPanelLoader').html();
+
+        Materialize.toast(toastContent, 5000, 'white rounded');
     }
 
     hideLoader = () => {
-        $("#rulesPanelLoader").find(".loader").fadeOut();
-        $("#rulesPanelLoader").find(".done").removeClass("esconder").hide().fadeIn();
 
-        $("#rulesPanelLoader").fadeIn().delay(2500).fadeOut();
+        $('#toast-container').empty();
+
+        var toastContent = $('#rulesPanelLoader').find('.toasted-done').clone().removeClass("esconder");
+
+        Materialize.toast(toastContent, 5000, 'white rounded');
     }
 
     handleRuleAdd = () => {
@@ -56,12 +57,13 @@ export default class RulesPanel extends React.Component {
 
         setTimeout(function() {
             panel.showLoader();
-            Materialize.toast('Suck me', 3000, 'rounded')
 
             setTimeout(function() {
                 panel.hideLoader();
-            }, 3000);
+            }, 2000);
         }, 3000);
+
+        $('.rules-action-bar li').tooltip({ delay: 50 });
 
         $('.rule-actions i').on('click', function() {
 
@@ -147,15 +149,15 @@ export default class RulesPanel extends React.Component {
         return(
             <div className='rules-panel'>
 
-                <Loader text="Processing changes" id="rulesPanelLoader" className="esconder"/>
+                <Loader text='Processing changes' textDone='Process complete' id='rulesPanelLoader' className='esconder'/>
 
                 <div className='rules-action-bar white grey darken-3-text'>
 
                     <div>RULES PANEL</div>
 
                     <ul>
-                        <li className="tooltipped" data-position="right" onClick={this.handleApplyChanges} data-tooltip="Apply changes"><Icon>backup</Icon></li>
-                        <li className="tooltipped" data-position="right" onClick={this.handleRuleAdd} data-tooltip="Add a rule"><Icon>add_circle</Icon></li>
+                        <li data-position='top' data-tooltip='Flush rules' onClick={this.handleApplyChanges}><Icon>backup</Icon></li>
+                        <li data-position='top' data-tooltip='Add a rule' onClick={this.handleRuleAdd}><Icon>add_circle</Icon></li>
                     </ul>
 
                 </div>

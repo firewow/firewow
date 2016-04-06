@@ -14,9 +14,9 @@ export default class Loader extends React.Component {
 
             <div className={'app-loader ' + this.props.className} id={this.props.id}>
 
-                <div className="loader">
+                <div className="toasted-loader">
 
-                    <div className="preloader-wrapper small active white">
+                    <div className="preloader-wrapper small active">
                       <div className="spinner-layer spinner-blue">
                         <div className="circle-clipper left">
                           <div className="circle"></div>
@@ -65,8 +65,14 @@ export default class Loader extends React.Component {
                     </div>
                 </div>
 
-                <div className="done esconder">
+                <div className="toasted-done esconder">
                     <Icon>check</Icon>
+
+                    <div className="loader-text">
+                        <span>
+                            {this.props.textDone}
+                        </span>
+                    </div>
                 </div>
 
             </div>
