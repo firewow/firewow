@@ -21,7 +21,9 @@ struct fwow_rule
     uint8   protocol;
     uint8   direction;
     uint32  source;
+    uint16  source_port;
     uint32  destination;
+    uint16  destination_port;
     uint8   flags;
 };
 

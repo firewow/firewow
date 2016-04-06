@@ -6,6 +6,7 @@
 #include "common.h"
 #include "utils.h"
 #include "rules.h"
+#include "file.h"
 
 #include <linux/netfilter_ipv4.h>
 #include <linux/ip.h>
@@ -14,27 +15,19 @@
 #include <linux/fs.h>
 #include <linux/list.h>
 #include <linux/semaphore.h>
+#include <linux/string.h>
+
+#include <asm/segment.h>
+#include <asm/uaccess.h>
+
+#include <linux/buffer_head.h>
 
 /**
  * Variables
  */
+
 static LIST_HEAD(fwow_rules_list);
-
-/**
- * Initialization
- */
-void fwow_rules_initialize(void)
-{
-	debug("Initializing rules");
-}
-
-/**
- * Cleanup
- */
-void fwow_rules_cleanup(void)
-{
-	debug("Cleaning rules");
-}
+//static DECLARE_MUTEX(fwow_rules_lock);
 
 /**
  * Rule handler/matcher
@@ -58,11 +51,43 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
     {
 
     }
-    //    debug("ALO");
-
 
     /**
      * Default behaviour
      */
     return NF_ACCEPT;
+}
+
+/**
+ * Load rules
+ */
+void fwow_rules_load(void)
+{
+    // Load rules
+}
+
+/**
+ * Release rules
+ */
+void fwow_rules_release(void)
+{
+    // Release rules
+}
+
+/**
+ * Initialization
+ */
+void fwow_rules_initialize(void)
+{
+	debug("Initializing rules");
+    fwow_rules_load();
+}
+
+/**
+ * Cleanup
+ */
+void fwow_rules_cleanup(void)
+{
+    fwow_rules_release();
+	debug("Cleaning rules");
 }

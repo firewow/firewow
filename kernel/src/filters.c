@@ -77,7 +77,7 @@ void fwow_filters_initialize(void)
 	fwow_hook_out.hook 		= (nf_hookfn*) fwow_filter_out;
 	fwow_hook_out.hooknum 	= NF_INET_POST_ROUTING;
 	fwow_hook_out.pf 		= PF_INET;
-	fwow_hook_out.priority 	= NF_IP_PRI_FIRST;
+	fwow_hook_out.priority 	= NF_IP_PRI_LAST;
 	nf_register_hook(&fwow_hook_out);
 }
 

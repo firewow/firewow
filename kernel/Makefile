@@ -1,6 +1,6 @@
 # Makefile
 obj-m := firewow.o
-firewow-objs := src/filters.o src/comm.o src/rules.o src/main.o
+firewow-objs := src/file.o src/filters.o src/comm.o src/rules.o src/main.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
