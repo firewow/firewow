@@ -1,10 +1,57 @@
 /**
+ * Header
+ */
+
+import 'colors'
+
+console.log((
+    "  _____  ____  ____     ___ __    __   ___   __    __ \n" +
+    " |     ||    ||    \\   /  _]  |__|  | /   \\ |  |__|  |\n" +
+    " |   __| |  | |  D  ) /  [_|  |  |  ||     ||  |  |  |\n" +
+    " |  |_   |  | |    / |    _]  |  |  ||  O  ||  |  |  |\n" +
+    " |   _]  |  | |    \\ |   [_|  `  '  ||     ||  `  '  |\n" +
+    " |  |    |  | |  .  \\|     |\\      / |     | \\      / \n" +
+    " |__|   |____||__|\\_||_____| \\_/\\_/   \\___/   \\_/\\_/  \n"
+).magenta);
+
+/**
+ * Check root
+ */
+
+import fs from 'fs'
+import isRoot from 'is-root'
+
+if (!isRoot()) {
+	console.error('> This server requires sudo/root access.'.red);
+	process.exit(-1);
+} else {
+	console.log('> Sudo access confirmed.'.green);
+}
+
+/**
+ * Configuration folder creation
+ */
+
+var databaseDirectory = '/etc/firewow';
+
+var stats = null;
+try {
+    stats = fs.lstatSync(databaseDirectory);
+} catch (e) {
+    try {
+        fs.mkdirSync(databaseDirectory);
+    } catch(e) {
+		console.error(('Failed to create ' + databaseDirectory).red);
+		console.error(e);
+		process.exit(-1);
+    }
+}
+
+/**
  * Imports
  */
 import express from 'express'
 import path from 'path'
-
-import 'colors'
 
 import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -39,19 +86,6 @@ if (development) {
 	}));
 }
 
-/**
- * Header
- */
-
-console.log((
-    "  _____  ____  ____     ___ __    __   ___   __    __ \n" +
-    " |     ||    ||    \\   /  _]  |__|  | /   \\ |  |__|  |\n" +
-    " |   __| |  | |  D  ) /  [_|  |  |  ||     ||  |  |  |\n" +
-    " |  |_   |  | |    / |    _]  |  |  ||  O  ||  |  |  |\n" +
-    " |   _]  |  | |    \\ |   [_|  `  '  ||     ||  `  '  |\n" +
-    " |  |    |  | |  .  \\|     |\\      / |     | \\      / \n" +
-    " |__|   |____||__|\\_||_____| \\_/\\_/   \\___/   \\_/\\_/  \n"
-).magenta);
 
 /**
  * User check
