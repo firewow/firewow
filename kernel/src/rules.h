@@ -18,23 +18,31 @@ struct fwow_rule
     struct list_head list;
 
     uint8   action;
-    uint8   protocol;
     uint8   direction;
-    uint32  source;
-    uint16  source_port;
-    uint32  destination;
-    uint16  destination_port;
+
+    uint8   protocol;
+
+    uint32  srcaddr_min;
+    uint32  srcaddr_max;
+
+    uint16  srcport_min;
+    uint16  srcport_max;
+
+    uint32  dstaddr_min;
+    uint32  dstaddr_max;
+
+    uint16  dstport_min;
+    uint16  dstport_max;
+
     uint8   flags;
 };
 
 /**
- * Flags
+ * Actions
  */
 enum {
-    FWOW_RULE_FLAG_SRCADDR_ALL = 1,
-    FWOW_RULE_FLAG_SRCPORT_ALL = 2,
-    FWOW_RULE_FLAG_DSTADDR_ALL = 4,
-    FWOW_RULE_FLAG_DSTPORT_ALL = 8
+    FWOW_RULE_ACTION_DROP    = 0,
+    FWOW_RULE_ACTION_PASS    = 1
 };
 
 /**
@@ -56,11 +64,13 @@ enum {
 };
 
 /**
- * Actions
+ * Flags
  */
 enum {
-    FWOW_RULE_ACTION_DROP    = 0,
-    FWOW_RULE_ACTION_PASS    = 1
+    FWOW_RULE_FLAG_SRCADDR_ALL = 1,
+    FWOW_RULE_FLAG_SRCPORT_ALL = 2,
+    FWOW_RULE_FLAG_DSTADDR_ALL = 4,
+    FWOW_RULE_FLAG_DSTPORT_ALL = 8
 };
 
 /**

@@ -23,6 +23,7 @@
 #include "comm.h"
 #include "utils.h"
 #include "filters.h"
+#include "rules.h"
 
 /**
  * Module initialization
@@ -31,6 +32,7 @@
 int fwow_init(void)
 {
 	debug("Initialization started.");
+    fwow_rules_initialize();
 	fwow_filters_initialize();
 	fwow_comm_initialize();
 	debug("Initialization finished.");
@@ -46,6 +48,7 @@ void fwow_exit(void)
 	debug("Cleanup started.");
     fwow_comm_cleanup();
 	fwow_filters_cleanup();
+    fwow_rules_cleanup();
 	debug("Cleanup finished.");
 }
 
