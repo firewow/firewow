@@ -68,14 +68,12 @@ ssize_t fwow_file_read(struct file* f, char** buffer)
     }
 
     fwow_file_segment_enter(&fs);
-
-    totalSize = vfs_llseek(f, 0, SEEK_END) + 1;
-    vfs_llseek(f, 0, 0);
-    *buffer = kmalloc(totalSize, GFP_KERNEL);
-
-    memset(buffer, 0, totalSize);
-    vfs_read(f, *buffer, totalSize - 1, &f->f_pos);
-
+    totalSize = vfs_llseek(f, 0, SEEK_END);
+    vfs_llseek(f, 0, SEEK_SET);
+    *buffer = kmalloc(totalSize + 1, GFP_KERNEL);
+    memset(*buffer, 0, totalSize);
+    vfs_read(f, *buffer, totalSize, &f->f_pos);
+    (*buffer)[totalSize] = 0;
     fwow_file_segment_leave(&fs);
-    return totalSize;
+    return totalSize + 1;
 }

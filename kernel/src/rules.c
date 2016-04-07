@@ -17,6 +17,7 @@
 #include <linux/list.h>
 #include <linux/semaphore.h>
 #include <linux/string.h>
+#include <linux/inet.h>
 
 #include <asm/segment.h>
 #include <asm/uaccess.h>
@@ -57,6 +58,17 @@ void fwow_rule_free(struct fwow_rule* rule)
 }
 
 /**
+ * Adds a rule
+ */
+void fwow_rule_add(struct fwow_rule* rule)
+{
+    if (rule != NULL)
+    {
+        list_add_tail(&rule->list, &fwow_rules_list);
+    }
+}
+
+/**
  * Rule handler/matcher
  */
 unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
@@ -70,13 +82,9 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
 
     ip_header = (struct iphdr*) skb_network_header(skb);
 
-    // ip_header->saddr;
-    // ip_header->daddr;
-    // ip_header->protocol;
-
     list_for_each_entry(r, &fwow_rules_list, list)
     {
-
+        debug("checking rule...");
     }
 
     /**
@@ -96,10 +104,10 @@ void fwow_rules_load(void)
     char* running = NULL;
     char* token = NULL;
     struct fwow_rule rule;
+    struct fwow_rule* newrule = NULL;
+    char delimiters[] = " \t\r\n";
 
     uint32 port = 0;
-
-    char delimiters[] = " \t\r\n";
 
     f = fwow_file_open("/etc/firewow/rules", O_RDONLY, 0);
     if (f == NULL)
@@ -109,23 +117,27 @@ void fwow_rules_load(void)
     }
 
     bufferSize = fwow_file_read(f, &buffer);
-    if (buffer != NULL)
+    if (buffer != NULL && bufferSize > 0)
     {
-        fwow_file_close(f);
-        return;
-
         running = buffer;
 
         while (1)
         {
+            ///
+            /// Zero rule
+            ///
+            ///
             memset(&rule, 0, sizeof(rule));
 
+            ///
             /// Action
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> act \"%s\"", token);
 
             rule.action = FWOW_RULE_ACTION_PASS;
             if (!strcmp(token, "drop")) {
@@ -134,12 +146,15 @@ void fwow_rules_load(void)
                 rule.action = FWOW_RULE_ACTION_PASS;
             }
 
+            ///
             /// Direction
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> dir \"%s\"", token);
 
             rule.direction = FWOW_RULE_DIRECTION_ALL;
             if (!strcmp(token, "in")) {
@@ -150,12 +165,15 @@ void fwow_rules_load(void)
                 rule.direction = FWOW_RULE_DIRECTION_ALL;
             }
 
+            ///
             /// Protocol
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> proto \"%s\"", token);
 
             rule.protocol = FWOW_RULE_PROTOCOL_ALL;
             if (!strcmp(token, "tcp")) {
@@ -166,8 +184,10 @@ void fwow_rules_load(void)
                 rule.protocol = FWOW_RULE_PROTOCOL_ALL;
             }
 
+            ///
             /// Source address start
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
@@ -176,26 +196,37 @@ void fwow_rules_load(void)
             if (!strcmp(token, "*")) {
                 rule.flags |= FWOW_RULE_FLAG_SRCADDR_ALL;
             } else {
-                //rule.srcaddr_min = inet_addr(token);
+                rule.srcaddr_min = htonl(in_aton(token));
             }
 
+            //debugf("> src_e \"%s\", int = %u", token, rule.srcaddr_min);
+
+            ///
             /// Source address end
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
 
             if ((rule.flags & FWOW_RULE_FLAG_SRCADDR_ALL) == 0) {
-                //rule.srcaddr_max = inet_addr(token);
+                if (strcmp(token, "*") != 0) {
+                    rule.srcaddr_max = htonl(in_aton(token));
+                }
             }
 
+            //debugf("> src_e \"%s\", int = %u", token, rule.srcaddr_max);
+
+            ///
             /// Source port start
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> src_p_s \"%s\"", token);
 
             if (!strcmp(token, "*")) {
                 rule.flags |= FWOW_RULE_FLAG_SRCPORT_ALL;
@@ -207,12 +238,15 @@ void fwow_rules_load(void)
                 rule.srcport_min = (uint16) port;
             }
 
+            ///
             /// Source port end
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> src_p_e \"%s\"", token);
 
             if ((rule.flags & FWOW_RULE_FLAG_SRCPORT_ALL) == 0) {
                 if (kstrtoint(token, 10, &port)) {
@@ -222,8 +256,10 @@ void fwow_rules_load(void)
                 rule.srcport_max = (uint16) port;
             }
 
+            ///
             /// Dest address start
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
@@ -232,54 +268,72 @@ void fwow_rules_load(void)
             if (!strcmp(token, "*")) {
                 rule.flags |= FWOW_RULE_FLAG_DSTADDR_ALL;
             } else {
-                //rule.dstaddr_min = inet_addr(token);
+                rule.dstaddr_min = htonl(in_aton(token));
             }
 
+            //debugf("> dst_s \"%s\", int = %u", token, rule.dstaddr_min);
+
+            ///
             /// Dest address end
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
 
             if ((rule.flags & FWOW_RULE_FLAG_DSTADDR_ALL) == 0) {
-                //inet_pton(AF_INET, token, &rule.dstaddr_max);
+                if (strcmp(token, "*") != 0) {
+                    rule.dstaddr_max = htonl(in_aton(token));
+                }
             }
 
+            //debugf("> dst_e \"%s\", int = %u", token, rule.dstaddr_max);
+
+            ///
             /// Dest port start
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> dst_p_s \"%s\"", token);
 
             if (!strcmp(token, "*")) {
                 rule.flags |= FWOW_RULE_FLAG_DSTPORT_ALL;
             } else {
                 if (kstrtoint(token, 10, &port)) {
-                    debug("invalid dest port (min) detected");
                     break;
                 }
                 rule.dstport_min = (uint16) port;
             }
 
+            ///
             /// Dest port end
             ///
+
             token = strsep(&running, delimiters);
             if (token == NULL) {
                 break;
             }
+            //debugf("> dst_p_e \"%s\"", token);
 
             if ((rule.flags & FWOW_RULE_FLAG_DSTPORT_ALL) == 0) {
                 if (kstrtoint(token, 10, &port)) {
-                    debug("invalid source port (max) detected");
                     break;
                 }
-                rule.dstport_max = (uint16) port;
+                rule.srcport_max = (uint16) port;
             }
 
-            debug("rule detected");
-            //prink(KERN_INFO "")|
+
+            //debugf("> flags %d", rule.flags);
+
+            ///
+            /// Add
+            ///
+            debug("<PLACEHOLDER> add rule to the list.");
+
         }
 
         kfree(buffer);

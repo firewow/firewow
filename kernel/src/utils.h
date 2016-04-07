@@ -10,6 +10,7 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 
-#define debug(msg)				printk(KERN_INFO "[firewow][%s] " msg "\n", __FUNCTION__)
+#define debug(msg)	        printk(KERN_INFO "[firewow][%s] " msg "\n", __FUNCTION__)
+#define debugf(msg, ...)    printk(KERN_INFO "[firewow][%s] " msg "\n", __FUNCTION__, __VA_ARGS__)
 
 #endif
