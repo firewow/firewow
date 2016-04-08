@@ -10,20 +10,26 @@ export default class Modal extends React.Component {
 
         var buttons = this.props.buttons.map(function(button, key) {
             return (
-                <a href="#!" key={key} className={'waves-effect waves-teal btn-flat' + (button.isClose ? ' modal-action modal-close' : '')}>{button.text}</a>
+                <a href="#!" key={key} className={'waves-effect waves-light btn-flat white-text' + (button.isClose ? ' modal-action modal-close' : '')}>{button.text}</a>
             );
         });
 
         return (
-            <div id={this.props.id} className={'modal ' + this.props.className}>
-                <div className="modal-content">
+            <div id={this.props.id} className={'modal modal-fixed-header' + (this.props.className ? ' ' + this.props.className : '')}>
+                <div className={"modal-header " + this.props.headerColor}>
                     <h4>{this.props.title}</h4>
+                </div>
+
+                <div className="modal-content">
+
                     {this.props.content}
+
                 </div>
 
                 <div className="modal-footer">
                     {buttons}
                 </div>
+
             </div>
 
         );

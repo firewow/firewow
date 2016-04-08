@@ -5,6 +5,9 @@ import React           from 'react'
 import { Icon, Input } from 'react-materialize';
 import Loader          from 'components/composition/loader'
 import Modal           from 'components/composition/modal'
+import CustomSwitch    from 'components/composition/customSwitch'
+import RadioInput      from 'components/composition/radioInput'
+import CheckInput      from 'components/composition/checkInput'
 
 /**
  * Component
@@ -21,7 +24,7 @@ export default class RulesPanel extends React.Component {
 
         $('#toast-container').empty();
 
-        var toastContent = $('#rulesPanelLoader').find('.toasted-done').clone().removeClass("esconder");
+        var toastContent = $('#rulesPanelLoader').find('.toasted-done').clone().removeClass('esconder');
 
         Materialize.toast(toastContent, 5000, 'white rounded');
     }
@@ -50,8 +53,18 @@ export default class RulesPanel extends React.Component {
 
     }
 
-    componentDidMount() {
+    handleToggleIpSourceRange = () => {
 
+      if($(".siprange").css("display") === "none") {
+        $(".siprange").removeClass('esconder').hide();
+        $(".siprange").show("slow");
+      } else {
+        $(".siprange").hide("slow");
+      }
+
+    }
+
+    componentDidMount() {
         //Simulating loader
         var panel = this;
 
@@ -172,22 +185,51 @@ export default class RulesPanel extends React.Component {
 
                 </div>
 
-                <div className="rules-reminder">
+                <div className='rules-reminder'>
                     <span>* The priority of the rules are given by their order in the list.</span>
                     <span>* Your rules will not work until you flush them.</span>
                 </div>
 
                 <Modal
                     id='addModal'
+                    headerColor='green'
                     title='Add a new rule'
                     content={
                         <form className='col s12'>
-                            <Input s={12} label='IP' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+'>
-                                <Icon>account_circle</Icon>
-                            </Input>
-                            <Input s={12} label='PORT' type='number'>
-                                <Icon>lock</Icon>
-                            </Input>
+
+                            <CustomSwitch label='ACTION' onText='PASS' offText='BLOCK' className='rule-policy'/>
+
+                            <div className="col s12 protocol-policy">
+                              <label className="lbl">Protocol</label>
+                              <RadioInput text='TCP'  inline={true} group='protocol' checked={true}/>
+                              <RadioInput text='UDP'  inline={true} group='protocol'/>
+                              <RadioInput text='BOTH' inline={true} group='protocol'/>
+                            </div>
+
+                            <CheckInput text='Use range for source IP' inline={true} group='useRangeSource' className='left padding-1x-left' onChange={this.handleToggleIpSourceRange}/>
+                            <Input s={12} label='Type the source IP address to start' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                            <div className='siprange esconder'>
+                              <Input s={12} label='Type the source IP address to end' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                            </div>
+
+                            <CheckInput text='Use range for source port' inline={true} group='useRangeSource' className='left padding-1x-left'/>
+                            <Input s={12} label='Starts from port' type='number'/>
+                            <div className='sportrange esconder'>
+                              <Input s={12} label='Ends on port' type='number'/>
+                            </div>
+
+                            <CheckInput text='Use range for destination IP' inline={true} group='useRangeSource' className='left padding-1x-left'/>
+                            <Input s={12} label='Type the destination IP address to start' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                            <div className='diprange esconder'>
+                              <Input s={12} label='Type the destination IP address to end' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                            </div>
+
+                            <CheckInput text='Use range for destination port' inline={true} group='useRangeSource' className='left padding-1x-left'/>
+                            <Input s={12} label='Starts from port' type='number'/>
+                            <div className='dportrange esconder'>
+                              <Input s={12} label='Ends on port' type='number'/>
+                            </div>
+
                         </form>
                     }
                     buttons={addModalButtons}
@@ -195,6 +237,7 @@ export default class RulesPanel extends React.Component {
 
                 <Modal
                     id='modModal'
+                    headerColor='orange'
                     title='Modifying rule'
                     content={
                         <form className='col s12'>
@@ -211,6 +254,7 @@ export default class RulesPanel extends React.Component {
 
                 <Modal
                     id='remModal'
+                    headerColor='deep-orange'
                     title='Removing rule'
                     content={
                         <form className='col s12'>
