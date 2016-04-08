@@ -66,7 +66,7 @@ unsigned int fwow_filter_out(
  */
 void fwow_filters_initialize(void)
 {
-	debug("Registering netfilter hooks");
+	debug("registering netfilter hooks");
 
 	fwow_hook_in.hook 		= (nf_hookfn*) fwow_filter_in;
 	fwow_hook_in.hooknum 	= NF_INET_PRE_ROUTING;
@@ -86,7 +86,7 @@ void fwow_filters_initialize(void)
  */
 void fwow_filters_cleanup(void)
 {
-	debug("Removing netfilter hooks");
+	debug("removing netfilter hooks");
 	nf_unregister_hook(&fwow_hook_in);
 	nf_unregister_hook(&fwow_hook_out);
 }

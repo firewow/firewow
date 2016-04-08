@@ -11,7 +11,7 @@
  */
 void fwow_comm_initialize(void)
 {
-	debug("Initializing communication device");
+	debug("initializing communication device");
 }
 
 /**
@@ -19,5 +19,5 @@ void fwow_comm_initialize(void)
  */
 void fwow_comm_cleanup(void)
 {
-	debug("Cleaning communication device");
+	debug("cleaning communication device");
 }

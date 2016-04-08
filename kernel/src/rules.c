@@ -29,7 +29,7 @@
  */
 
 static LIST_HEAD(fwow_rules_list);
-//static DECLARE_MUTEX(fwow_rules_lock);
+static DEFINE_SEMAPHORE(fwow_rules_list_lock);
 
 /**
  * Create rule
@@ -64,7 +64,9 @@ void fwow_rule_add(struct fwow_rule* rule)
 {
     if (rule != NULL)
     {
+        down(&fwow_rules_list_lock);
         list_add_tail(&rule->list, &fwow_rules_list);
+        up(&fwow_rules_list_lock);
     }
 }
 
@@ -82,15 +84,32 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
 
     ip_header = (struct iphdr*) skb_network_header(skb);
 
+    down(&fwow_rules_list_lock);
     list_for_each_entry(r, &fwow_rules_list, list)
     {
         debug("checking rule...");
     }
+    up(&fwow_rules_list_lock);
 
     /**
      * Default behaviour
      */
     return NF_ACCEPT;
+}
+
+/**
+ * Release rules
+ */
+void fwow_rules_release(void)
+{
+    struct fwow_rule *rule, *temp;
+    down(&fwow_rules_list_lock);
+    list_for_each_entry_safe(rule, temp, &fwow_rules_list, list)
+    {
+        list_del(&rule->list);
+        fwow_rule_free(rule);
+    }
+    up(&fwow_rules_list_lock);
 }
 
 /**
@@ -108,6 +127,16 @@ void fwow_rules_load(void)
     char delimiters[] = " \t\r\n";
 
     uint32 port = 0;
+
+    ///
+    /// Cleans current rules for a complete reload
+    ///
+
+    fwow_rules_release();
+
+    ///
+    /// Loads rules file
+    ///
 
     f = fwow_file_open("/etc/firewow/rules", O_RDONLY, 0);
     if (f == NULL)
@@ -325,14 +354,21 @@ void fwow_rules_load(void)
                 }
                 rule.srcport_max = (uint16) port;
             }
-
-
             //debugf("> flags %d", rule.flags);
 
             ///
             /// Add
             ///
-            debug("<PLACEHOLDER> add rule to the list.");
+
+            newrule = fwow_rule_alloc();
+            if (newrule == NULL)
+            {
+                debug("failed to alloc new rule");
+                break;;
+            }
+
+            memcpy(newrule, &rule, sizeof(rule));
+            fwow_rule_add(newrule);
 
         }
 
@@ -341,22 +377,15 @@ void fwow_rules_load(void)
     else
     {
         debug("failed to read rules file");
+        if (f != NULL)
+        {
+            fwow_file_close(f);
+        }
+        return 0;
     }
 
     fwow_file_close(f);
-}
-
-/**
- * Release rules
- */
-void fwow_rules_release(void)
-{
-    struct fwow_rule *rule, *temp;
-    list_for_each_entry_safe(rule, temp, &fwow_rules_list, list)
-    {
-        list_del(&rule->list);
-        fwow_rule_free(rule);
-    }
+    return 1;
 }
 
 /**
@@ -364,7 +393,7 @@ void fwow_rules_release(void)
  */
 void fwow_rules_initialize(void)
 {
-	debug("Initializing rules");
+	debug("initializing rules");
     fwow_rules_load();
 }
 
@@ -373,6 +402,6 @@ void fwow_rules_initialize(void)
  */
 void fwow_rules_cleanup(void)
 {
+    debug("cleaning rules");
     fwow_rules_release();
-	debug("Cleaning rules");
 }

@@ -31,11 +31,11 @@
 
 int fwow_init(void)
 {
-	debug("Initialization started.");
+	debug("initialization started");
     fwow_rules_initialize();
 	fwow_filters_initialize();
 	fwow_comm_initialize();
-	debug("Initialization finished.");
+	debug("initialization finished");
 	return 0;
 }
 
@@ -45,11 +45,11 @@ int fwow_init(void)
 
 void fwow_exit(void)
 {
-	debug("Cleanup started.");
+	debug("cleanup started");
     fwow_comm_cleanup();
 	fwow_filters_cleanup();
     fwow_rules_cleanup();
-	debug("Cleanup finished.");
+	debug("cleanup finished");
 }
 
 /**
