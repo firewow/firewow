@@ -9,9 +9,10 @@
 /**
  * Initialization
  */
-void fwow_comm_initialize(void)
+int fwow_comm_initialize(void)
 {
 	debug("initializing communication device");
+    return 0;
 }
 
 /**

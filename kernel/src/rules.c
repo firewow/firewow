@@ -234,7 +234,7 @@ void fwow_rules_release(void)
 /**
  * Load rules
  */
-void fwow_rules_load(void)
+int fwow_rules_load(void)
 {
     struct file* f = NULL;
     ssize_t bufferSize = 0;
@@ -261,7 +261,7 @@ void fwow_rules_load(void)
     if (f == NULL)
     {
         debug("failed to open rules file");
-        return;
+        return 1;
     }
 
     bufferSize = fwow_file_read(f, &buffer);
@@ -287,11 +287,11 @@ void fwow_rules_load(void)
             }
             //debugf("> act \"%s\"", token);
 
-            rule.action = FWOW_RULE_ACTION_PASS;
+            rule.action = FWOW_RULE_ACTION_ACCEPT;
             if (!strcmp(token, "drop")) {
                 rule.action = FWOW_RULE_ACTION_DROP;
-            } else if (!strcmp(token, "pass")) {
-                rule.action = FWOW_RULE_ACTION_PASS;
+            } else if (!strcmp(token, "accept")) {
+                rule.action = FWOW_RULE_ACTION_ACCEPT;
             }
 
             ///
@@ -500,20 +500,20 @@ void fwow_rules_load(void)
         {
             fwow_file_close(f);
         }
-        return 0;
+        return 1;
     }
 
     fwow_file_close(f);
-    return 1;
+    return 0;
 }
 
 /**
  * Initialization
  */
-void fwow_rules_initialize(void)
+int fwow_rules_initialize(void)
 {
 	debug("initializing rules");
-    fwow_rules_load();
+    return fwow_rules_load();
 }
 
 /**

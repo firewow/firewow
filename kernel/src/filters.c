@@ -33,7 +33,7 @@ unsigned int fwow_filter_in(
     {
     case FWOW_RULE_ACTION_DROP:
         return NF_DROP;
-    case FWOW_RULE_ACTION_PASS:
+    case FWOW_RULE_ACTION_ACCEPT:
         return NF_ACCEPT;
     }
 	return NF_ACCEPT;
@@ -55,7 +55,7 @@ unsigned int fwow_filter_out(
     {
     case FWOW_RULE_ACTION_DROP:
         return NF_DROP;
-    case FWOW_RULE_ACTION_PASS:
+    case FWOW_RULE_ACTION_ACCEPT:
         return NF_ACCEPT;
     }
 	return NF_ACCEPT;
@@ -64,7 +64,7 @@ unsigned int fwow_filter_out(
 /**
  * Initialization
  */
-void fwow_filters_initialize(void)
+int fwow_filters_initialize(void)
 {
 	debug("registering netfilter hooks");
 
@@ -79,6 +79,8 @@ void fwow_filters_initialize(void)
 	fwow_hook_out.pf 		= PF_INET;
 	fwow_hook_out.priority 	= NF_IP_PRI_LAST;
 	nf_register_hook(&fwow_hook_out);
+
+    return 0;
 }
 
 /**

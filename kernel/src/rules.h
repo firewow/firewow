@@ -42,7 +42,7 @@ struct fwow_rule
  */
 enum {
     FWOW_RULE_ACTION_DROP    = 0,
-    FWOW_RULE_ACTION_PASS    = 1
+    FWOW_RULE_ACTION_ACCEPT  = 1
 };
 
 /**
@@ -76,7 +76,7 @@ enum {
 /**
  * Methods
  */
-void fwow_rules_initialize(void);
+int fwow_rules_initialize(void);
 void fwow_rules_cleanup(void);
 unsigned int fwow_rules_filter(struct sk_buff* skb, int direction);
 
