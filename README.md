@@ -1,4 +1,4 @@
-![FireWOW](/web/client/images/logo.png)
+![FireWOW](/web/client/images/logo-black.png)
 
 # Overview
 
