@@ -41,36 +41,36 @@ struct fwow_rule
  * Actions
  */
 enum {
-    FWOW_RULE_ACTION_DROP    = 0,
-    FWOW_RULE_ACTION_ACCEPT  = 1
+    FWOW_RULE_ACTION_DROP       = 0,
+    FWOW_RULE_ACTION_ACCEPT     = 1
 };
 
 /**
  * Directions
  */
 enum {
-    FWOW_RULE_DIRECTION_IN   = 1,
-    FWOW_RULE_DIRECTION_OUT  = 2,
-    FWOW_RULE_DIRECTION_BOTH  = 3
+    FWOW_RULE_DIRECTION_IN      = 1,
+    FWOW_RULE_DIRECTION_OUT     = 2,
+    FWOW_RULE_DIRECTION_BOTH    = 3
 };
 
 /**
  * Protocols
  */
 enum {
-    FWOW_RULE_PROTOCOL_TCP   = 1,
-    FWOW_RULE_PROTOCOL_UDP   = 2,
-    FWOW_RULE_PROTOCOL_BOTH   = 3
+    FWOW_RULE_PROTOCOL_TCP      = 1,
+    FWOW_RULE_PROTOCOL_UDP      = 2,
+    FWOW_RULE_PROTOCOL_BOTH     = 3
 };
 
 /**
  * Flags
  */
 enum {
-    FWOW_RULE_FLAG_SRCADDR_ANY = 1,
-    FWOW_RULE_FLAG_SRCPORT_ANY = 2,
-    FWOW_RULE_FLAG_DSTADDR_ANY = 4,
-    FWOW_RULE_FLAG_DSTPORT_ANY = 8
+    FWOW_RULE_FLAG_SRCADDR_ANY  = 1,
+    FWOW_RULE_FLAG_SRCPORT_ANY  = 2,
+    FWOW_RULE_FLAG_DSTADDR_ANY  = 4,
+    FWOW_RULE_FLAG_DSTPORT_ANY  = 8
 };
 
 /**

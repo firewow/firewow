@@ -92,13 +92,19 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         return NF_ACCEPT;
     }
 
+    ///
     /// IP Header
     ///
+
     ip = ip_hdr(skb);
     if (ip == NULL)
     {
         return NF_ACCEPT;
     }
+
+    ///
+    /// Packet parser
+    ///
 
     srcaddr = htonl(ip->saddr);
     dstaddr = htonl(ip->daddr);
@@ -135,9 +141,9 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         return NF_ACCEPT;
     }
 
-    debugf(FWOW_IP_FORMAT ":%u -> " FWOW_IP_FORMAT ":%u",
-        FWOW_IP_VALUE(srcaddr), srcport,
-        FWOW_IP_VALUE(dstaddr), dstport);
+    ///
+    /// Rule matching list
+    ///
 
     down(&fwow_rules_list_lock);
 
@@ -162,7 +168,6 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (srcaddr < r->srcaddr_min || srcaddr > r->srcaddr_max)
             {
-                debug("src out of range");
                 continue;
             }
         }
@@ -171,7 +176,6 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (dstaddr < r->dstaddr_min || dstaddr > r->dstaddr_max)
             {
-                debug("dst out of range");
                 continue;
             }
         }
@@ -180,7 +184,6 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (srcport < r->srcport_min || srcport > r->srcport_max)
             {
-                debug("src port out of range");
                 continue;
             }
         }
@@ -189,19 +192,16 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (dstport < r->dstport_min || dstport > r->dstport_max)
             {
-                debug("dst port out of range");
                 continue;
             }
         }
 
         if (r->action == FWOW_RULE_ACTION_DROP)
         {
-            debug("dropping");
             action = NF_DROP;
         }
         else if (r->action == FWOW_RULE_ACTION_ACCEPT)
         {
-            debug("accepting");
             action = NF_ACCEPT;
         }
 
@@ -274,7 +274,7 @@ int fwow_rules_load(void)
             ///
             /// Zero rule
             ///
-            ///
+
             memset(&rule, 0, sizeof(rule));
 
             ///
@@ -285,7 +285,6 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> act \"%s\"", token);
 
             rule.action = FWOW_RULE_ACTION_ACCEPT;
             if (!strcmp(token, "drop")) {
@@ -302,7 +301,6 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> dir \"%s\"", token);
 
             rule.direction = FWOW_RULE_DIRECTION_BOTH;
             if (!strcmp(token, "in")) {
@@ -321,7 +319,6 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> proto \"%s\"", token);
 
             rule.protocol = FWOW_RULE_PROTOCOL_BOTH;
             if (!strcmp(token, "tcp")) {
@@ -347,8 +344,6 @@ int fwow_rules_load(void)
                 rule.srcaddr_min = htonl(in_aton(token));
             }
 
-            //debugf("> src_e \"%s\", int = %u", token, rule.srcaddr_min);
-
             ///
             /// Source address end
             ///
@@ -358,13 +353,13 @@ int fwow_rules_load(void)
                 break;
             }
 
-            if ((rule.flags & FWOW_RULE_FLAG_SRCADDR_ANY) == 0) {
+            if (!FWOW_BIT_CHECK(rule.flags, FWOW_RULE_FLAG_SRCADDR_ANY)) {
                 if (strcmp(token, "*") != 0) {
                     rule.srcaddr_max = htonl(in_aton(token));
+                } else {
+                    rule.srcaddr_max = rule.srcaddr_min;
                 }
             }
-
-            //debugf("> src_e \"%s\", int = %u", token, rule.srcaddr_max);
 
             ///
             /// Source port start
@@ -374,7 +369,6 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> src_p_s \"%s\"", token);
 
             if (!strcmp(token, "*")) {
                 rule.flags |= FWOW_RULE_FLAG_SRCPORT_ANY;
@@ -394,9 +388,8 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> src_p_e \"%s\"", token);
 
-            if ((rule.flags & FWOW_RULE_FLAG_SRCPORT_ANY) == 0) {
+            if (!FWOW_BIT_CHECK(rule.flags, FWOW_RULE_FLAG_SRCPORT_ANY)) {
                 if (kstrtoint(token, 10, &port)) {
                     debug("invalid source port (max) detected");
                     break;
@@ -419,8 +412,6 @@ int fwow_rules_load(void)
                 rule.dstaddr_min = htonl(in_aton(token));
             }
 
-            //debugf("> dst_s \"%s\", int = %u", token, rule.dstaddr_min);
-
             ///
             /// Dest address end
             ///
@@ -430,13 +421,13 @@ int fwow_rules_load(void)
                 break;
             }
 
-            if ((rule.flags & FWOW_RULE_FLAG_DSTADDR_ANY) == 0) {
+            if (!FWOW_BIT_CHECK(rule.flags, FWOW_RULE_FLAG_DSTADDR_ANY)) {
                 if (strcmp(token, "*") != 0) {
                     rule.dstaddr_max = htonl(in_aton(token));
+                } else {
+                    rule.dstaddr_max = rule.dstaddr_min;
                 }
             }
-
-            //debugf("> dst_e \"%s\", int = %u", token, rule.dstaddr_max);
 
             ///
             /// Dest port start
@@ -446,7 +437,6 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> dst_p_s \"%s\"", token);
 
             if (!strcmp(token, "*")) {
                 rule.flags |= FWOW_RULE_FLAG_DSTPORT_ANY;
@@ -465,15 +455,13 @@ int fwow_rules_load(void)
             if (token == NULL) {
                 break;
             }
-            //debugf("> dst_p_e \"%s\"", token);
 
-            if ((rule.flags & FWOW_RULE_FLAG_DSTPORT_ANY) == 0) {
+            if (!FWOW_BIT_CHECK(rule.flags, FWOW_RULE_FLAG_DSTPORT_ANY)) {
                 if (kstrtoint(token, 10, &port)) {
                     break;
                 }
-                rule.srcport_max = (uint16) port;
+                rule.dstport_max = (uint16) port;
             }
-            //debugf("> flags %d", rule.flags);
 
             ///
             /// Add
