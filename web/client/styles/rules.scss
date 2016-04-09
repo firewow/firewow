@@ -46,6 +46,34 @@
        .modal-content {
           form {
              padding: 0px 55px 40px 55px;
+
+             h4 {
+               text-align: left;
+               text-transform: uppercase;
+               letter-spacing: .2rem;
+               font-size: 1em;
+               padding-left: 10px;
+             }
+
+             h5 {
+               text-align: left;
+               text-transform: uppercase;
+               letter-spacing: .2rem;
+               font-size: .8em;
+               padding-left: 10px;
+             }
+          }
+
+          .source-settings {
+              padding: 20px 0px 50px 0px;
+              display: block;
+              overflow: auto;
+              width: 100%;
+
+              .siprange {
+                width: 100%;
+                overflow: auto;
+              }              
           }
        }
 

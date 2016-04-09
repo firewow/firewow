@@ -11,11 +11,6 @@ componentWillMount() {
 
 
 componentDidMount() {
-  if(this.props.checked) {
-
-    $("#" + this.id).prop("checked", true);
-
-  }
 }
 
 
@@ -24,15 +19,13 @@ render() {
   var element = '';
 
   if(this.props.inline) {
-
     element = (<span>
-      <input name={this.props.group} type='radio' id={this.id} />
+      <input name={this.props.group} type='radio' id={this.id} {...this.props} />
       <label htmlFor={this.id}>{this.props.text}</label>
     </span>);
-
   } else {
     element = (<p>
-      <input name={this.props.group} type='radio' id={this.id} />
+      <input name={this.props.group} type='radio' id={this.id} {...this.props} />
       <label htmlFor={this.id}>{this.props.text}</label>
     </p>);
   }
