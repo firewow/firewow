@@ -16,7 +16,7 @@ export default class CustomSwitch extends React.Component {
         <div className={'switch'}>
           <label>
             {this.props.offText}
-            <input type='checkbox'/>
+            <input type='checkbox' {...this.props}/>
             <span className='lever'></span>
             {this.props.onText}
           </label>

@@ -53,6 +53,7 @@
                letter-spacing: .2rem;
                font-size: 1em;
                padding-left: 10px;
+               margin-bottom: 0;
              }
 
              h5 {
@@ -62,18 +63,25 @@
                font-size: .8em;
                padding-left: 10px;
              }
+
+             .sep {
+               border: 1px solid #E2E2E2;
+               margin-bottom: 15px 0 15px 0;
+               width: 100%;
+               float: left;
+             }
+
+             .cfg-item {
+               padding: 30px 0 0 0;
+               overflow: auto;
+             }
           }
 
-          .source-settings {
-              padding: 20px 0px 50px 0px;
+          .source-settings, .destination-settings {
+              padding: 15px 0px 0px 0px;
               display: block;
               overflow: auto;
               width: 100%;
-
-              .siprange {
-                width: 100%;
-                overflow: auto;
-              }              
           }
        }
 
