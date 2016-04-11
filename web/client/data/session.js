@@ -210,6 +210,9 @@ class SessionStore {
     }
 }
 
+/**
+ * Export
+ */
 export {
     SessionActions,
     SessionStore

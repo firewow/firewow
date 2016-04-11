@@ -72,12 +72,12 @@
              }
 
              .cfg-item {
-               padding: 30px 0 0 0;
+               padding: 0 0 0 0;
                overflow: auto;
              }
           }
 
-          .source-settings, .destination-settings {
+          .config-wrapper {
               padding: 15px 0px 0px 0px;
               display: block;
               overflow: auto;
@@ -204,6 +204,56 @@
                       }
                     }
 
+                    .rule-direction {
+
+                        font-weight: bold;
+                        background-color: #FFF;
+                        padding: 4px;
+                        color: #000;
+                        margin-right: 5px;
+                        border-radius: 4px;
+                        text-transform: uppercase;
+
+                        &.in {
+                            background-color: rgb(20, 204, 50);
+                            color: white;
+                        }
+
+                        &.out {
+                            background-color: rgb(204, 20, 20);
+                            color: white;
+                        }
+                    }
+
+                    .rule-protocol {
+                        font-weight: bold;
+                        background-color: #FFF;
+                        padding: 4px;
+                        color: #000;
+                        margin-right: 5px;
+                        border-radius: 4px;
+                        text-transform: uppercase;
+
+                        &.tcp {
+                            background-color: rgb(20, 110, 204) !important;
+                            color: white;
+                        }
+
+                        &.udp {
+                            background-color: rgb(178, 20, 204) !important;
+                            color: white;
+                        }
+
+                        &.both {
+                            background-color: rgb(20, 171, 204) !important;
+                            color: white;
+                        }
+                    }
+
+                    .rule-name {
+                        margin-left: 8px;
+                    }
+
                     &.drop .rule-actions {
                         background-color: #b71c1c;
                         float: right;
@@ -261,7 +311,7 @@
             }
         }
 
-        .protocol-policy {
+        .aligner {
             padding: 20px 20px 20px 10px;
 
             span {
