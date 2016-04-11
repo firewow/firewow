@@ -2,9 +2,9 @@
 * Imports
 */
 import React        from 'react'
-import CustomSwitch from 'components/composition/customSwitch'
-import RadioInput   from 'components/composition/radioInput'
-import CheckInput   from 'components/composition/checkInput'
+import CustomSwitch from 'components/composition/custom_switch'
+import RadioInput   from 'components/composition/radio_input'
+import CheckInput   from 'components/composition/check_input'
 import { Input }    from 'react-materialize';
 
 export default class RuleForm extends React.Component {

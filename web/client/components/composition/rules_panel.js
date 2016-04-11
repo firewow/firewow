@@ -5,7 +5,7 @@ import React           from 'react'
 import { Icon, Input } from 'react-materialize';
 import Loader          from 'components/composition/loader'
 import Modal           from 'components/composition/modal'
-import RuleItem        from 'components/composition/ruleItem'
+import RuleItem        from 'components/composition/rule_item'
 import RuleForm        from 'components/composition/rule_form'
 
 /**

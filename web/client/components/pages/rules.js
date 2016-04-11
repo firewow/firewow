@@ -3,8 +3,8 @@
  */
 import {Button, Icon, Row, Input} from 'react-materialize';
 import appHistory                 from 'apphistory';
-import RulesPanel                 from 'components/composition/rulesPanel';
-import RuleItem                   from 'components/composition/ruleItem'
+import RulesPanel                 from 'components/composition/rules_panel';
+import RuleItem                   from 'components/composition/rule_item'
 
 import 'styles/rules.scss';
 

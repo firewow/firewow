@@ -4,8 +4,8 @@
 import {Button, Icon, Row, Input} from 'react-materialize';
 import { SessionStore }           from 'data/session'
 import Menu                       from 'components/composition/menu'
-import MenuItem                   from 'components/composition/menuItem'
-import MenuDivider                from 'components/composition/menuDivider'
+import MenuItem                   from 'components/composition/menu_item'
+import MenuDivider                from 'components/composition/menu_divider'
 import appHistory                 from 'apphistory'
 
 import 'styles/home.scss';
