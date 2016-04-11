@@ -54,7 +54,7 @@ clean1:
     fwow_rules_cleanup();
 
     debug("initialization finished with error");
-    return 1;
+    return -EIO;
 }
 
 /**

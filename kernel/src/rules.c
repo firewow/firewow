@@ -257,8 +257,10 @@ int fwow_rules_load(void)
     /// Loads rules file
     ///
 
+	debug("opening rules file");
+
     f = fwow_file_open("/etc/firewow/rules", O_RDONLY, 0);
-    if (f == NULL)
+    if (IS_ERR(f))
     {
         debug("failed to open rules file");
         return 1;

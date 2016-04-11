@@ -14,6 +14,7 @@
  * Variables
  */
 
+static int fwow_hook_registered = 0;
 static struct nf_hook_ops fwow_hook_in;
 static struct nf_hook_ops fwow_hook_out;
 
@@ -80,6 +81,7 @@ int fwow_filters_initialize(void)
 	fwow_hook_out.priority 	= NF_IP_PRI_LAST;
 	nf_register_hook(&fwow_hook_out);
 
+	fwow_hook_registered = 1;
     return 0;
 }
 
@@ -89,6 +91,9 @@ int fwow_filters_initialize(void)
 void fwow_filters_cleanup(void)
 {
 	debug("removing netfilter hooks");
-	nf_unregister_hook(&fwow_hook_in);
-	nf_unregister_hook(&fwow_hook_out);
+	if (fwow_hook_registered)
+	{
+		nf_unregister_hook(&fwow_hook_in);
+		nf_unregister_hook(&fwow_hook_out);
+	}
 }

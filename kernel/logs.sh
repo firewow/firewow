@@ -1,3 +1,3 @@
 #!/bin/bash
 
-watch -p "dmesg | tail -25"
+watch -n 1 -c -p "dmesg | tail -25"
