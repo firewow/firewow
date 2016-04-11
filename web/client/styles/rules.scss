@@ -198,6 +198,12 @@
                         background-color: #f44336;
                     }
 
+                    .rule-actions {
+                      div {
+                        float: left;
+                      }
+                    }
+
                     &.drop .rule-actions {
                         background-color: #b71c1c;
                         float: right;

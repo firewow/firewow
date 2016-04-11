@@ -10,7 +10,7 @@ export default class Modal extends React.Component {
 
         var buttons = this.props.buttons.map(function(button, key) {
             return (
-                <a href="#!" key={key} className={'waves-effect waves-light btn-flat white-text' + (button.isClose ? ' modal-action modal-close' : '')}>{button.text}</a>
+                <a href="#!" key={key} className='waves-effect waves-light btn-flat white-text' onClick={button.callback}>{button.text}</a>
             );
         });
 

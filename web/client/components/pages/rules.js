@@ -25,6 +25,7 @@ export default class Rules extends React.Component {
      * Render
      */
     render() {
+
         return (
             <div className='grey darken-3 noselect valign-wrapper rules'>
 
@@ -32,11 +33,7 @@ export default class Rules extends React.Component {
 
                     <div className='valign firewow-logo'></div>
 
-                    <RulesPanel>
-                        <RuleItem className='accept' name='Rule 1'/>
-                        <RuleItem className='drop'   name='Rule 2'/>
-                        <RuleItem className='accept' name='Rule 3'/>
-                    </RulesPanel>
+                    <RulesPanel/>
 
                 </Row>
             </div>

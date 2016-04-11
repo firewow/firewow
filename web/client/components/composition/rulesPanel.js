@@ -5,6 +5,7 @@ import React           from 'react'
 import { Icon, Input } from 'react-materialize';
 import Loader          from 'components/composition/loader'
 import Modal           from 'components/composition/modal'
+import RuleItem        from 'components/composition/ruleItem'
 import RuleForm        from 'components/composition/rule_form'
 
 /**
@@ -14,6 +15,23 @@ export default class RulesPanel extends React.Component {
 
     constructor() {
         super();
+
+        this.state = {
+          modal: {
+            headerColor: 'grey',
+            title: '',
+            disabled: false,
+            data: {},
+            buttons: []
+          },
+
+          rules: [
+            { name: 'Rule 1', className: 'accept' },
+            { name: 'Rule 2', className: 'drop' },
+            { name: 'Rule 3', className: 'accept' },
+            { name: 'Rule 4', className: 'drop' }
+          ]
+        };
     }
 
     showLoader = () => {
@@ -27,45 +45,89 @@ export default class RulesPanel extends React.Component {
         Materialize.toast(toastContent, 5000, 'white rounded');
     }
 
-    handleRuleAdd = () => {
+    handleOpenModal = (type) => {
 
-        $('#addModal').openModal();
+      return () => {
 
-    }
+        console.log('changing modal to ' + type);
 
-    handleRuleModify = () => {
+        var callbackCancel = () => {
+          $("#modal").closeModal();
+        }
 
-        $('#modModal').openModal();
+        switch (type) {
+          case 'create':
 
-    }
+            this.setState({
+              modal: {
+                headerColor: 'green',
+                title: 'Creating rule',
+                disabled: false,
+                data: {},
+                buttons: [
+                  {text: 'ADD'   , isClose: true},
+                  {text: 'CANCEL', isClose: true, callback: callbackCancel}
+                ]
+              }
+            });
+            break;
 
-    handleRuleRemoval = () => {
+          case 'modify':
 
-        $('#remModal').openModal();
+            this.setState({
+              modal: {
+                headerColor: 'orange',
+                title: 'Modifying rule',
+                disabled: false,
+                data: {},
+                buttons: [
+                  {text: 'MODIFY', isClose: true},
+                  {text: 'CANCEL', isClose: true, callback: callbackCancel}
+                ]
+              }
+            });
+            break;
+
+          case 'destroy':
+            this.setState({
+              modal: {
+                headerColor: 'deep-orange',
+                title: 'Removing rule',
+                disabled: true,
+                data: {},
+                buttons: [
+                  {text: 'REMOVE IT!', isClose: true},
+                  {text: 'CANCEL'    , isClose: true, callback: callbackCancel}
+                ]
+              }
+            });
+            break;
+
+          default:
+            console.log('No form was found for ' + type);
+        }
+
+        $('#modal').openModal();
+
+      }
 
     }
 
     handleApplyChanges = () => {
 
-      //Apply...
+      //Flush rules
+
+    }
+
+    handleFormAction = (data) => {
+
+      console.log('saving form ', data);
 
     }
 
     componentDidMount() {
-        //Simulating loader
-        var panel = this;
 
         $('.rules-action-bar li').tooltip({ delay: 50 });
-
-        $('.rule-actions i').on('click', function() {
-
-            if($(this).text() === 'create') {
-                panel.handleRuleModify();
-            } else {
-                panel.handleRuleRemoval();
-            }
-
-        });
 
         $( '#sortable' ).sortable({
           placeholder: 'drag-rule-helper',
@@ -123,84 +185,52 @@ export default class RulesPanel extends React.Component {
 
     render() {
 
-        var addModalButtons = [
-            {text: 'ADD', isClose: true},
-            {text: 'CANCEL', isClose: true}
-        ];
+      var rules = this.state.rules.map((rule, key) => {
+          return (
+              <RuleItem key={key} className={rule.className} name={rule.name} onInteraction={this.handleOpenModal} />
+          );
+      });
 
-        var modModalButtons = [
-            {text: 'MODIFY', isClose: true},
-            {text: 'CANCEL', isClose: true}
-        ];
+      return(
+          <div className='rules-panel'>
 
-        var remModalButtons = [
-            {text: 'REMOVE IT!', isClose: true},
-            {text: 'CANCEL', isClose: true}
-        ];
+              <Loader text='Processing changes' textDone='Process complete' id='rulesPanelLoader' className='esconder'/>
 
-        return(
-            <div className='rules-panel'>
+              <div className='rules-action-bar white grey darken-3-text'>
 
-                <Loader text='Processing changes' textDone='Process complete' id='rulesPanelLoader' className='esconder'/>
+                  <div>RULES PANEL</div>
 
-                <div className='rules-action-bar white grey darken-3-text'>
+                  <ul>
+                      <li data-position='top' data-tooltip='Flush rules' onClick={this.handleApplyChanges}><Icon>backup</Icon></li>
+                      <li data-position='top' data-tooltip='Add a rule' onClick={this.handleOpenModal('create')}><Icon>add_circle</Icon></li>
+                  </ul>
 
-                    <div>RULES PANEL</div>
+              </div>
 
-                    <ul>
-                        <li data-position='top' data-tooltip='Flush rules' onClick={this.handleApplyChanges}><Icon>backup</Icon></li>
-                        <li data-position='top' data-tooltip='Add a rule' onClick={this.handleRuleAdd}><Icon>add_circle</Icon></li>
-                    </ul>
+              <div className='rules-list-wrapper'>
 
-                </div>
+                  <ul className='rules-list' id='sortable'>
 
-                <div className='rules-list-wrapper'>
+                      {rules}
 
-                    <ul className='rules-list' id='sortable'>
+                  </ul>
 
-                        {this.props.children}
+              </div>
 
-                    </ul>
+              <div className='rules-reminder'>
+                  <span>* The priority of the rules are given by their order in the list.</span>
+                  <span>* Your rules will not work until you flush them.</span>
+              </div>
 
-                </div>
+              <Modal
+                  id='modal'
+                  headerColor={this.state.modal.headerColor}
+                  title={this.state.modal.title}
+                  content={ <RuleForm ref='rule_form' formData={this.state.modal.data} submitCallback={this.handleFormAction} disabled={this.state.modal.disabled} /> }
+                  buttons={this.state.modal.buttons}
+              />
 
-                <div className='rules-reminder'>
-                    <span>* The priority of the rules are given by their order in the list.</span>
-                    <span>* Your rules will not work until you flush them.</span>
-                </div>
-
-                <Modal
-                    id='addModal'
-                    headerColor='green'
-                    title='Add a new rule'
-                    content={
-                        <RuleForm/>
-                    }
-                    buttons={addModalButtons}
-                />
-
-                <Modal
-                    id='modModal'
-                    headerColor='orange'
-                    title='Modifying rule'
-                    content={
-                        <RuleForm/>
-                    }
-                    buttons={modModalButtons}
-                />
-
-                <Modal
-                    id='remModal'
-                    headerColor='deep-orange'
-                    title='Removing rule'
-                    content={
-                        <RuleForm disabled={true} protocol='udp'/>
-                    }
-                    buttons={remModalButtons}
-                />
-
-            </div>
-        );
-    }
-
+          </div>
+      );
+  }
 }
