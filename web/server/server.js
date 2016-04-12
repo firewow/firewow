@@ -31,20 +31,7 @@ if (!isRoot()) {
  * Configuration folder creation
  */
 
-var databaseDirectory = '/etc/firewow';
-
-var stats = null;
-try {
-    stats = fs.lstatSync(databaseDirectory);
-} catch (e) {
-    try {
-        fs.mkdirSync(databaseDirectory);
-    } catch(e) {
-		console.error(('Failed to create ' + databaseDirectory).red);
-		console.error(e);
-		process.exit(-1);
-    }
-}
+import './permissions'
 
 /**
  * Imports
@@ -59,11 +46,13 @@ import webpackConfig from '../../webpack.config'
 
 import db from './database.js'
 import routes from './routes.js'
+import bodyParser from 'body-parser'
 
 var development = false;
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
    development = true;
 }
+
 
 /**
  * Creates the application
@@ -81,7 +70,6 @@ if (development) {
 	}));
 
 	app.use(webpackHotMiddleware(webpackCompiler, {
-
 	}));
 }
 
@@ -103,6 +91,12 @@ console.log('> %d rules loaded'.blue, rules);
  * Serves static files
  */
 app.use(express.static(path.resolve(__dirname, "../assets")));
+
+/**
+ * Body
+ */
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Modules

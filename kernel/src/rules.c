@@ -263,7 +263,7 @@ int fwow_rules_load(void)
     if (IS_ERR(f))
     {
         debug("failed to open rules file");
-        return 1;
+        return 0;
     }
 
     bufferSize = fwow_file_read(f, &buffer);
@@ -490,7 +490,7 @@ int fwow_rules_load(void)
         {
             fwow_file_close(f);
         }
-        return 1;
+        return 0;
     }
 
     fwow_file_close(f);
