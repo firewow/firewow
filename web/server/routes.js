@@ -1,6 +1,7 @@
 import 'colors'
 import fs from 'fs'
 import db from './database.js'
+import { exec } from 'child_process'
 
 export default function(app) {
     /**
@@ -118,6 +119,16 @@ export default function(app) {
         console.log(data.green);
 
         fs.writeFileSync('/etc/firewow/rules', data);
+
+        exec(__dirname + '/../../kernel/reload.sh',
+            function (error, stdout, stderr) {
+                console.log(stdout);
+                console.log(stderr);
+                if (error !== null) {
+                    console.log(error);
+                }
+            });
+
         response.json(db("rules").toJSON());
 
     });

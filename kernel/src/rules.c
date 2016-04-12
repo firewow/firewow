@@ -29,7 +29,7 @@
  */
 
 static LIST_HEAD(fwow_rules_list);
-static DEFINE_SEMAPHORE(fwow_rules_list_lock);
+//static DEFINE_SEMAPHORE(fwow_rules_list_lock);
 
 /**
  * Create rule
@@ -65,9 +65,9 @@ void fwow_rule_add(struct fwow_rule* rule)
     if (rule != NULL)
     {
         debug("Adding new rule");
-        down(&fwow_rules_list_lock);
+        //down(&fwow_rules_list_lock);
         list_add_tail(&rule->list, &fwow_rules_list);
-        up(&fwow_rules_list_lock);
+        //up(&fwow_rules_list_lock);
     }
 }
 
@@ -146,7 +146,7 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
     /// Rule matching list
     ///
 
-    down(&fwow_rules_list_lock);
+    //down(&fwow_rules_list_lock);
 
     list_for_each_entry(r, &fwow_rules_list, list)
     {
@@ -209,7 +209,7 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         break;
     }
 
-    up(&fwow_rules_list_lock);
+    //up(&fwow_rules_list_lock);
 
     /**
      * Default behaviour
@@ -223,13 +223,13 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
 void fwow_rules_release(void)
 {
     struct fwow_rule *rule, *temp;
-    down(&fwow_rules_list_lock);
+    //down(&fwow_rules_list_lock);
     list_for_each_entry_safe(rule, temp, &fwow_rules_list, list)
     {
         list_del(&rule->list);
         fwow_rule_free(rule);
     }
-    up(&fwow_rules_list_lock);
+    //up(&fwow_rules_list_lock);
 }
 
 /**

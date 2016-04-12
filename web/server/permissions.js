@@ -7,6 +7,22 @@ var databasePath        = '/etc/firewow/database';
 /**
  * Create directory
  */
+function scriptsPermissions() {
+    var scripts = ['build.sh', 'clean.sh', 'logs.sh', 'reload.sh'];
+    for (var index in scripts) {
+        var script = scripts[index];
+        try {
+            fs.chmodSync(__dirname + '/../../kernel/' + script, '755');
+        } catch(e) {
+            console.error('Script chmod failed for '.red + script.red.bold);
+        }
+    }
+    return false;
+}
+
+/**
+ * Create directory
+ */
 function createDirectory() {
     try {
         fs.mkdirSync(databaseDirectory);
@@ -100,3 +116,4 @@ function checkRules() {
 checkDirectory();
 checkRules();
 checkDatabase();
+scriptsPermissions();
