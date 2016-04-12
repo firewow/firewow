@@ -196,13 +196,23 @@
                     &.accept {
                         background-color: white;
                         position: relative;
-                        border-left: 15px solid #4CAF50;
+                        border-bottom: 5px solid #4CAF50;
+                        @include transition(.5s);
+                    }
+
+                    &.accept:hover {
+                        border-color: #CDDC39;
                     }
 
                     &.drop {
                         background-color: white;
                         position: relative;
-                        border-left: 15px solid #f44336;
+                        border-bottom: 5px solid #f44336;
+                        @include transition(.3s);
+                    }
+
+                    &.drop:hover {
+                        border-color: #FF5722;
                     }
 
                     .rule-actions {
@@ -259,12 +269,10 @@
 
                     .rule-name {
                         margin-left: 8px;
-                        position: relative;
-                        z-index: 50;
                     }
 
                     &.drop .rule-actions {
-                        background-color: #f44336;
+                        background-color: #FF5722;
                         float: right;
                         height: 50px;
                         padding: 8px;
@@ -281,12 +289,16 @@
                         }
 
                         i:hover {
-                            color: #E0E0E0;
+                            -ms-transform: rotate(360deg); /* IE 9 */
+                            -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+                            transform: rotate(360deg);
+
+                            color: #455A64;
                         }
                     }
 
                     &.accept .rule-actions {
-                        background-color: #4CAF50;
+                        background-color: #CDDC39;
                         float: right;
                         height: 50px;
                         padding: 8px;
@@ -303,7 +315,11 @@
                         }
 
                         i:hover {
-                            color: #E0E0E0;
+                            -ms-transform: rotate(360deg); /* IE 9 */
+                            -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+                            transform: rotate(360deg);
+
+                            color: #455A64;
                         }
                     }
                 }
