@@ -390,13 +390,55 @@
 
 /* SMARTPHONES */
 @media only screen and (max-height: 700px) {
-    .valign-wrapper {
-      display: block;
-    }
+    .rules {
 
-    .firewow-logo {
-      top: 0px;
-      margin-bottom: 50px;
+        overflow: auto;
+
+        .rules-panel {
+            margin-top: 50px;
+
+            .rules-list {
+
+              li {
+                  font-size: 1em;
+                  overflow: hidden;
+                  position: relative;
+              }
+
+              .rule-actions {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+              }
+
+            }
+
+            .modal {
+
+                .modal-header {
+                    h4 {
+                        font-size: 1em;
+                        line-height: 200%;
+                    }
+                }
+
+                .modal-content {
+                    form {
+                        padding: 0px;
+                        font-size: 0.7em;
+                    }
+                }
+
+                .modal-footer {
+                    a {
+                        font-size: 0.8em;
+                        padding: 1em;
+                    }
+                }
+            }
+
+        }
+
     }
 }
 
@@ -407,8 +449,53 @@
 
         overflow: auto;
 
+        .firewow-logo {
+            margin-top: -50px;
+        }
+
         .rules-panel {
-          margin-top: 50px;
+            margin-top: 100px;
+
+            .rules-list {
+
+              li {
+                  font-size: 1em;
+                  overflow: hidden;
+                  position: relative;
+              }
+
+              .rule-actions {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+              }
+
+            }
+
+            .modal {
+
+                .modal-header {
+                    h4 {
+                        font-size: 1em;
+                        line-height: 200%;
+                    }
+                }
+
+                .modal-content {
+                    form {
+                        padding: 0px;
+                        font-size: 0.7em;
+                    }
+                }
+
+                .modal-footer {
+                    a {
+                        font-size: 0.8em;
+                        padding: 1em;
+                    }
+                }
+            }
+
         }
 
     }
@@ -422,7 +509,48 @@
         overflow: auto;
 
         .rules-panel {
-          margin-top: 50px;
+            margin-top: 50px;
+
+            .rules-list {
+
+              li {
+                  font-size: 1em;
+                  overflow: hidden;
+                  position: relative;
+              }
+
+              .rule-actions {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+              }
+
+            }
+
+            .modal {
+
+                .modal-header {
+                    h4 {
+                        font-size: 1em;
+                        line-height: 200%;
+                    }
+                }
+
+                .modal-content {
+                    form {
+                        padding: 0px;
+                        font-size: 0.7em;
+                    }
+                }
+
+                .modal-footer {
+                    a {
+                        font-size: 0.8em;
+                        padding: 1em;
+                    }
+                }
+            }
+
         }
 
     }
