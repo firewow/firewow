@@ -181,7 +181,10 @@ export default class RulesPanel extends React.Component {
      * Form action
      */
     handleFlush = (data) => {
-        console.log('flush rules');
+        console.log('flushing rules');
+
+        console.log(this.state.rules);
+
         this.hideTrash();
     }
 

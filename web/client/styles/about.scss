@@ -1,0 +1,62 @@
+/**
+ * SCSS Document
+ * Created: 2016-04-12
+ * About screen style
+ * @author Augusto Russo
+ */
+
+/**
+ * Imports
+ */
+@import 'mixins.scss';
+
+.about {
+
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    cursor: default;
+
+    .firewow-logo {
+        top: 15px;
+        left: 0;
+        right: 0;
+        position: absolute;
+    }
+
+    .brand {
+        color: white;
+        letter-spacing: .2rem;
+        font-size: 2em;
+        text-transform: uppercase;
+    }
+
+    .tools {
+        background-color: white;
+    }
+
+    .node {
+        background-image: url('../images/node.png');
+        background-size: 200px 200px;
+        width: 200px;
+        height: 200px;
+    }
+
+    .webpack {
+        background-image: url('../images/webpack.png');
+        background-repeat: no-repeat;
+        background-size: 250px auto;
+        width: 250px;
+        height: 180px;
+    }
+
+    .react {
+        background-image: url('../images/react.png');
+        background-size: 200px 200px;
+        width: 200px;
+        height: 200px;
+    }
+}
