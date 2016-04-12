@@ -64,7 +64,7 @@ void fwow_rule_add(struct fwow_rule* rule)
 {
     if (rule != NULL)
     {
-        debug("Adding new rule");
+        debug("adding new rule");
         //down(&fwow_rules_list_lock);
         list_add_tail(&rule->list, &fwow_rules_list);
         //up(&fwow_rules_list_lock);
@@ -82,6 +82,7 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
     struct udphdr* udp = NULL;
 
     int action = NF_ACCEPT;
+    int i = 0;
 
     uint32 srcaddr = 0;
     uint32 dstaddr = 0;
@@ -143,25 +144,50 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
     }
 
     ///
+    /// Localhost
+    ///
+
+    if (dstaddr == 0x7F000001) {
+        // Localhost
+        return NF_ACCEPT;
+    }
+
+    ///
     /// Rule matching list
     ///
+    ///
+
+    debug("--------------------------");
 
     //down(&fwow_rules_list_lock);
 
+    i = 0;
+
+    debugf("[%u] " FWOW_IP_FORMAT ":%u -> " FWOW_IP_FORMAT ":%u",
+        ip->protocol,
+        FWOW_IP_VALUE(srcaddr), srcport,
+        FWOW_IP_VALUE(dstaddr), dstport
+    );
+
     list_for_each_entry(r, &fwow_rules_list, list)
     {
+        debugf("checking rule #%u", ++i);
+
         if (!FWOW_BIT_CHECK(r->direction, direction))
         {
+            debugf(">>> direction mismatch %u (%u)", r->direction, direction);
             continue;
         }
 
         if (ip->protocol == IPPROTO_TCP && !FWOW_BIT_CHECK(r->protocol, FWOW_RULE_PROTOCOL_TCP))
         {
+            debug(">>> tcp mismatch");
             continue;
         }
 
         if (ip->protocol == IPPROTO_UDP && !FWOW_BIT_CHECK(r->protocol, FWOW_RULE_PROTOCOL_UDP))
         {
+            debug(">>> udp mismatch");
             continue;
         }
 
@@ -169,6 +195,11 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (srcaddr < r->srcaddr_min || srcaddr > r->srcaddr_max)
             {
+                debugf(">> srcaddr mismatch " FWOW_IP_FORMAT "~" FWOW_IP_FORMAT " (" FWOW_IP_FORMAT ")",
+                    FWOW_IP_VALUE(r->srcaddr_min),
+                    FWOW_IP_VALUE(r->srcaddr_max),
+                    FWOW_IP_VALUE(srcaddr)
+                );
                 continue;
             }
         }
@@ -177,6 +208,11 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (dstaddr < r->dstaddr_min || dstaddr > r->dstaddr_max)
             {
+                debugf(">> dstaddr mismatch " FWOW_IP_FORMAT "~" FWOW_IP_FORMAT " (" FWOW_IP_FORMAT ")",
+                    FWOW_IP_VALUE(r->dstaddr_min),
+                    FWOW_IP_VALUE(r->dstaddr_max),
+                    FWOW_IP_VALUE(dstaddr)
+                );
                 continue;
             }
         }
@@ -185,6 +221,7 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (srcport < r->srcport_min || srcport > r->srcport_max)
             {
+                debugf(">> srcport mismatch %u~%u (%u)", r->srcport_min, r->srcport_max, srcport);
                 continue;
             }
         }
@@ -193,16 +230,19 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
         {
             if (dstport < r->dstport_min || dstport > r->dstport_max)
             {
+                debugf(">> dstport mismatch %u~%u (%u)", r->dstport_min, r->dstport_max, dstport);
                 continue;
             }
         }
 
         if (r->action == FWOW_RULE_ACTION_DROP)
         {
+            debug(">> matched : drop");
             action = NF_DROP;
         }
         else if (r->action == FWOW_RULE_ACTION_ACCEPT)
         {
+            debug(">> matched : accept");
             action = NF_ACCEPT;
         }
 
