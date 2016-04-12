@@ -318,7 +318,7 @@ export default class RulesPanel extends React.Component {
 
                 <Loader text='Processing changes' textDone='Process complete' id='rulesPanelLoader' className='esconder'/>
 
-                <div className='rules-action-bar white grey darken-3-text'>
+                <div className='rules-action-bar grey lighten-2 grey darken-3-text'>
                     <div>RULES</div>
                     <ul>
                         <li data-position='top' ref='trash' data-tooltip='Discard changes' onClick={this.handleDiscardChanges}><Icon>delete</Icon></li>
