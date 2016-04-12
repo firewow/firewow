@@ -20,7 +20,6 @@
 #include <linux/vmalloc.h>
 #include <asm/uaccess.h>
 
-#include "comm.h"
 #include "utils.h"
 #include "filters.h"
 #include "rules.h"
@@ -40,14 +39,9 @@ int fwow_init(void)
     if (fwow_filters_initialize())
         goto clean2;
 
-	if (fwow_comm_initialize())
-        goto clean3;
-
 	debug("initialization finished");
 	return 0;
 
-clean3:
-    fwow_comm_cleanup();
 clean2:
     fwow_filters_cleanup();
 clean1:
@@ -64,7 +58,6 @@ clean1:
 void fwow_exit(void)
 {
 	debug("cleanup started");
-    fwow_comm_cleanup();
 	fwow_filters_cleanup();
     fwow_rules_cleanup();
 	debug("cleanup finished");

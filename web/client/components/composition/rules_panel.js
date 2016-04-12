@@ -80,7 +80,6 @@ export default class RulesPanel extends React.Component {
             dstport_max: 0
         };
 
-
         this.refs.editor.open($.extend(emptyRule, {
             color: 'green',
             title: 'New rule',
@@ -124,7 +123,6 @@ export default class RulesPanel extends React.Component {
      */
     handleDestroyRule = (index) => {
         return () => {
-
             this.refs.editor.open($.extend(this.state.rules[index], {
                 color: 'deep-orange',
                 title: 'Remove rule',
@@ -157,34 +155,27 @@ export default class RulesPanel extends React.Component {
      * Rule updated locally
      */
     updateRule = (index, rule) => {
-
         var rules = this.state.rules;
         rules[index] = rule;
         this.setState({ rules });
         this.showTrash();
-
     }
 
     /**
      * Rule removed locally
      */
     removeRule = (index) => {
-
         var rules = this.state.rules;
         rules.splice(index, 1);
         this.setState({ rules });
         this.showTrash();
-
     }
 
     /**
      * Form action
      */
     handleFlush = (data) => {
-        console.log('flushing rules');
-
-        console.log(this.state.rules);
-
+        RulesActions.flush(this.state.rules);
         this.hideTrash();
     }
 
