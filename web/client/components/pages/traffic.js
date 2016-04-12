@@ -1,42 +1,79 @@
 /**
  * Imports
  */
-import {Button, Icon, Row, Input}     from 'react-materialize';
-import appHistory                     from 'apphistory'
-import { Sparklines, SparklinesLine, SparklinesSpots  } from 'react-sparklines';
+import { Button, Icon, Row, Input } from 'react-materialize'
+import { Sparklines, SparklinesLine, SparklinesSpots  } from 'react-sparklines'
 
-import 'styles/traffic.scss';
+import appHistory from 'apphistory'
+import RTChart from 'react-rt-chart'
+import io from 'socket.io-client'
+
+import 'c3/c3.css'
+import 'styles/traffic.scss'
 
 /**
  * Class
  */
 export default class TrafficView extends React.Component {
 
+    /**
+     * Constructor
+     * @return {[type]} [description]
+     */
     constructor() {
         super();
-        var d = [];
-        for (var i = 0; i < 32; i++) {
-            d.push(Math.round(25 + (Math.random() * 75)));
-        }
         this.state = {
-            data: d
+            fields: [],
+            data_rx: {},
+            data_tx: {}
         };
+        console.log('constructor');
     }
 
+    /**
+     * Go back
+     */
     handleGoBack = () => {
         appHistory.push('/home');
     }
 
+    /**
+     * Mount
+     */
     componentDidMount() {
-        setInterval(() => {
-            var data = this.state.data.concat(Math.round(25 + (Math.random() * 75)));
-            if (data.length > 64) {
-                data = data.splice(32);
+        console.log('mounting');
+        this.io = io();
+        this.io.on('bw', (bandwidth) => {
+
+            var ifaces = [];
+            var data = { date: new Date() };
+
+            for (var iface in bandwidth) {
+                ifaces.push(iface + '_rx');
+                ifaces.push(iface + '_tx');
+                data[iface + '_rx'] = Math.round(bandwidth[iface].rx);
+                data[iface + '_tx'] = Math.round(bandwidth[iface].tx);
             }
+
             this.setState({
+                fields: ifaces,
                 data: data
             });
-        }, 500);
+
+            this.forceUpdate();
+        });
+    }
+
+    /**
+     * Unmount
+     */
+    componentWillUnmount() {
+        console.log('unmounting');
+        if (!this.io) {
+            return;
+        }
+        this.io.disconnect();
+        delete this.io;
     }
 
     /**
@@ -47,12 +84,13 @@ export default class TrafficView extends React.Component {
             <div className='grey darken-3 noselect valign-wrapper traffic'>
                 <Row className='container row valign center padding-1x'>
                     <div className='valign firewow-logo'></div>
-                    <div>
+                    <div style={{backgroundColor: 'white'}}>
                         <h4>Traffic View</h4>
-                        <Sparklines data={this.state.data} limit={32} width={600} height={50}>
-                            <SparklinesLine style={{ stroke: "none", fill: "#8e44af", fillOpacity: "1" }}/>
-                            <SparklinesSpots />
-                        </Sparklines>
+                        <RTChart
+                            chart={{size : { height: 280 }, tooltip: { show: false }}}
+                            flow={{duration: 0}}
+                            fields={this.state.fields}
+                            data={this.state.data} />
                     </div>
                 </Row>
             </div>

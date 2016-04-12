@@ -36,6 +36,7 @@ import './permissions'
 /**
  * Imports
  */
+import http from 'http'
 import express from 'express'
 import path from 'path'
 
@@ -46,6 +47,7 @@ import webpackConfig from '../../webpack.config'
 
 import db from './database.js'
 import routes from './routes.js'
+import monitor from './monitor.js'
 import bodyParser from 'body-parser'
 
 var development = false;
@@ -53,11 +55,11 @@ if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
    development = true;
 }
 
-
 /**
  * Creates the application
  */
 var app = express();
+var server = http.createServer(app);
 
 /**
  * Webpack
@@ -102,6 +104,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
  * Modules
  */
 routes(app);
+monitor(server);
 
 /**
  * Render
@@ -120,7 +123,7 @@ app.use(function(request, response, next) {
 /**
  * Listen
  */
-app.listen(process.env.FWOW_PORT || 8000, function() {
+server.listen(process.env.FWOW_PORT || 8000, function() {
     console.log('');
 	console.log(('> firewow admin started ' + (development ? "(development)" : "(production)")).green);
     console.log('');

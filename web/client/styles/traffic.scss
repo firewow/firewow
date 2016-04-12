@@ -1,17 +1,15 @@
 .traffic {
-    position: fixed;
+    position: absolute;
     width: 100%;
     height: 100%;
     left: 0;
     top: 0;
-    z-index: 10;
     cursor: default;
+    overflow: auto;
 
     .firewow-logo {
-       position: absolute;
-       top: 15px;
-       left: 15px;
-   }
+        display: block;
+    }
 
     div {
         color: white;

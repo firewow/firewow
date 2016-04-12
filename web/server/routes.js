@@ -4,6 +4,7 @@ import db from './database.js'
 import { exec } from 'child_process'
 
 export default function(app) {
+    
     /**
      * Rules list
      */
