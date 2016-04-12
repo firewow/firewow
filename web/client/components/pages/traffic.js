@@ -49,10 +49,10 @@ export default class TrafficView extends React.Component {
             var data = { date: new Date() };
 
             for (var iface in bandwidth) {
-                ifaces.push(iface + '_rx');
-                ifaces.push(iface + '_tx');
-                data[iface + '_rx'] = Math.round(bandwidth[iface].rx);
-                data[iface + '_tx'] = Math.round(bandwidth[iface].tx);
+                ifaces.push(iface + ' download');
+                ifaces.push(iface + ' upload');
+                data[iface + ' download'] = Math.round(bandwidth[iface].rx);
+                data[iface + ' upload'] = Math.round(bandwidth[iface].tx);
             }
 
             this.setState({
@@ -84,7 +84,7 @@ export default class TrafficView extends React.Component {
             <div className='grey darken-3 noselect valign-wrapper traffic'>
                 <Row className='container row valign center padding-1x'>
                     <div className='valign firewow-logo'></div>
-                    <div style={{backgroundColor: 'white'}}>
+                    <div className='white z-depth-1'>
                         <h4>Traffic View</h4>
                         <RTChart
                             chart={{size : { height: 280 }, tooltip: { show: false }}}

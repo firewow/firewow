@@ -1,3 +1,15 @@
+/**
+ * SCSS Document
+ * Created: 2016-03-29
+ * Traffic screen style
+ * @author Augusto Russo
+ */
+
+/**
+ * Imports
+ */
+@import 'mixins.scss';
+
 .traffic {
     position: absolute;
     width: 100%;
@@ -9,15 +21,23 @@
 
     .firewow-logo {
         display: block;
+        margin-top: 100px;
+        position: absolute;
+        left: 0;
+        right: 0;
     }
 
     div {
         color: white;
         text-transform: capitalize;
         letter-spacing: .2rem;
+        @include borderRadius(3px);
 
         h4 {
             text-transform: uppercase;
+            margin-bottom: 100px;
+            background-color: #2196F3 !important;
+            padding: 15px;
         }
     }
 
@@ -33,6 +53,10 @@
     .traffic {
 
         overflow: auto;
+
+        .firewow-logo {
+            margin-top: 0px;
+        }
 
         .brand {
             margin-top: 100px;
@@ -59,8 +83,7 @@
         }
 
         .firewow-logo {
-            left: 0;
-            right: 0;
+            margin-top: 0px;
         }
 
         .tools {
@@ -77,6 +100,10 @@
     .traffic {
 
         overflow: auto;
+
+        .firewow-logo {
+            margin-top: 0px;
+        }
 
         h4 {
             margin-top: 100px;
