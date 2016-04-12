@@ -44,7 +44,7 @@ export default function(app) {
                 content.push('*');
             } else if (current.srcaddr_type == 'single') {
                 content.push(current.srcaddr_min);
-                content.push('*');
+                content.push(current.srcaddr_min);
             } else if (current.srcaddr_type == 'range') {
                 content.push(current.srcaddr_min);
                 content.push(current.srcaddr_max);
@@ -63,7 +63,7 @@ export default function(app) {
                 content.push('*');
             } else if (current.srcport_type == 'single') {
                 content.push(current.srcport_min);
-                content.push('*');
+                content.push(current.srcport_min);
             } else if (current.srcport_type == 'range') {
                 content.push(current.srcport_min);
                 content.push(current.srcport_max);
@@ -82,10 +82,10 @@ export default function(app) {
                 content.push('*');
             } else if (current.dstaddr_type == 'single') {
                 content.push(current.dstaddr_min);
-                content.push('*');
+                content.push(current.dstaddr_min);
             } else if (current.dstaddr_type == 'range') {
                 content.push(current.dstaddr_min);
-                content.push(current.dstaddr_maxn);
+                content.push(current.dstaddr_max);
             } else {
                 content.push('*');
                 content.push('*');
@@ -101,7 +101,7 @@ export default function(app) {
                 content.push('*');
             } else if (current.dstport_type == 'single') {
                 content.push(current.dstport_min);
-                content.push('*');
+                content.push(current.dstport_min);
             } else if (current.dstport_type == 'range') {
                 content.push(current.dstport_min);
                 content.push(current.dstport_max);
@@ -114,6 +114,8 @@ export default function(app) {
             data += content.join("\t") + "\n";
 
         }
+
+        console.log(data.green);
 
         fs.writeFileSync('/etc/firewow/rules', data);
         response.json(db("rules").toJSON());
