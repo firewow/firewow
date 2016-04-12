@@ -1,13 +1,13 @@
 /**
  * Imports
  */
-import React            from 'react'
-import { Icon, Input }  from 'react-materialize';
-import Loader           from 'components/composition/loader'
-import Modal            from 'components/composition/modal'
-import RuleItem         from 'components/composition/rule_item'
-import RuleForm         from 'components/composition/rule_form'
-import RuleEditor       from 'components/composition/rule_editor'
+import React                          from 'react'
+import { Icon, Input }                from 'react-materialize'
+import Loader                         from 'components/composition/loader'
+import Modal                          from 'components/composition/modal'
+import RuleItem                       from 'components/composition/rule_item'
+import RuleForm                       from 'components/composition/rule_form'
+import RuleEditor                     from 'components/composition/rule_editor'
 import { RulesStore, RulesActions }   from 'data/rules'
 
 /**
@@ -42,24 +42,59 @@ export default class RulesPanel extends React.Component {
         Materialize.toast(toastContent, 5000, 'white rounded');
     }
 
+    showTrash = () => {
+        $(this.refs.trash).slideDown("slow");
+    }
+
+    hideTrash = () => {
+        $(this.refs.trash).slideUp("slow");
+    }
+
     /**
      * Add rule
      */
     handleAddRule = () => {
-        this.refs.editor.open({
+
+        var emptyRule = {
+            name: '',
+
+            action: 'accept',
+            protocol: 'tcp',
+
+            direction: 'in',
+
+            srcaddr_type: 'any',
+            srcaddr_min: '',
+            srcaddr_max: '',
+
+            srcport_type: 'any',
+            srcport_min: 0,
+            srcport_max: 0,
+
+            dstaddr_type: 'any',
+            dstaddr_min: '',
+            dstaddr_max: '',
+
+            dstport_type: 'any',
+            dstport_min: 0,
+            dstport_max: 0
+        };
+
+
+        this.refs.editor.open($.extend(emptyRule, {
             color: 'green',
             title: 'New rule',
             editable: true,
             buttons: {
                 submit: (editor) => {
-                    console.log('form data: ', editor.getState());
+                    this.pushRule(editor.getData());
                     editor.close();
                 },
                 cancel: (editor) => {
                     editor.close();
                 }
             }
-        });
+        }));
     }
 
     /**
@@ -67,20 +102,20 @@ export default class RulesPanel extends React.Component {
      */
     handleModifyRule = (index) => {
         return () => {
-            this.refs.editor.open({
+            this.refs.editor.open($.extend(this.state.rules[index], {
                 color: 'orange',
                 title: 'Edit rule',
                 editable: true,
                 buttons: {
-                    submit: (editor, data) => {
-                        console.log('modify called');
+                    submit: (editor) => {
+                        this.updateRule(index, editor.getData());
                         editor.close();
                     },
                     cancel: (editor) => {
                         editor.close();
                     }
                 }
-            });
+            }));
         };
     }
 
@@ -89,28 +124,57 @@ export default class RulesPanel extends React.Component {
      */
     handleDestroyRule = (index) => {
         return () => {
-            this.refs.editor.open({
-                color: 'red',
+
+            this.refs.editor.open($.extend(this.state.rules[index], {
+                color: 'deep-orange',
                 title: 'Remove rule',
                 editable: false,
                 buttons: {
-                    destroy: (editor, data) => {
-                        console.log('destroy called');
+                    destroy: (editor) => {
+                        this.removeRule(index);
                         editor.close();
                     },
                     cancel: (editor) => {
                         editor.close();
                     }
                 }
-            });
+            }));
         };
     }
 
     /**
-     * Handle apply changes
+     * Rule saved locally
      */
-    handleApplyChanges = () => {
-        console.log('apply changes');
+    pushRule = (rule) => {
+        var rules = this.state.rules;
+        rules.push(rule);
+        this.setState({ rules });
+        this.showTrash();
+    }
+
+
+    /**
+     * Rule updated locally
+     */
+    updateRule = (index, rule) => {
+
+        var rules = this.state.rules;
+        rules[index] = rule;
+        this.setState({ rules });
+        this.showTrash();
+
+    }
+
+    /**
+     * Rule removed locally
+     */
+    removeRule = (index) => {
+
+        var rules = this.state.rules;
+        rules.splice(index, 1);
+        this.setState({ rules });
+        this.showTrash();
+
     }
 
     /**
@@ -118,6 +182,15 @@ export default class RulesPanel extends React.Component {
      */
     handleFlush = (data) => {
         console.log('flush rules');
+        this.hideTrash();
+    }
+
+    /**
+     * Discard all changes that have not been flushed yet
+     */
+    handleDiscardChanges = () => {
+        this.handleRulesUpdate();
+        this.hideTrash();
     }
 
     /**
@@ -130,54 +203,45 @@ export default class RulesPanel extends React.Component {
             delay: 50
         });
 
+        this.hideTrash();
+
+        // Listen
+        RulesStore.listen(this.handleRulesUpdate);
+
+        // Fetch
+        RulesActions.fetch.defer();
+    }
+
+    /**
+     * Update
+     */
+    componentDidUpdate() {
         $( '#sortable' ).sortable({
             placeholder: 'drag-rule-helper',
-            start: function( event, ui ) {
+            start: ( event, ui ) => {
                 ui.item.find('.rule-actions').animate({
                     width: 'toggle'
                 });
+
+                this.oldPosition = ui.item.index();
             },
-            stop: function( event, ui ) {
+            stop: ( event, ui ) => {
                 ui.item.find('.rule-actions').clearQueue().stop().animate({
                     width: 0,
                     opacity: 0
                 }, function() {
                     ui.item.find('.rule-actions').css('display', 'none');
                 });
+
+                this.reorderRules(this.oldPosition, ui.item.index());
+            },
+            update: ( event, ui ) => {
+                this.showTrash();
             }
+
         });
 
         $( '#sortable' ).disableSelection();
-
-        $('.rules-list li').each(function() {
-            var bar = $(this).find('.rule-actions');
-            bar.animate({
-                width: 'toggle'
-            });
-        });
-
-        $('.rules-list li').hover(function() {
-            var bar = $(this).find('.rule-actions');
-            bar.css('display', 'block');
-            bar.clearQueue().stop().animate({
-                width: 90,
-                opacity: 1
-            });
-        }, function() {
-            var bar = $(this).find('.rule-actions');
-            bar.clearQueue().stop().animate({
-                width: 0,
-                opacity: 0
-            }, function() {
-                bar.css('display', 'none');
-            });
-        });
-
-        /// Listen
-        RulesStore.listen(this.handleRulesUpdate);
-
-        /// Fetch
-        RulesActions.fetch.defer();
     }
 
     /**
@@ -191,9 +255,26 @@ export default class RulesPanel extends React.Component {
      * Rule store updated
      */
     handleRulesUpdate = () => {
+        var rules = JSON.parse(JSON.stringify(RulesStore.getState().rules));
+
         this.setState({
-            rules: RulesStore.getState().rules
+            rules: rules
         });
+    }
+
+    /**
+     * Reorder requested
+     */
+    reorderRules = (oldPosition, newPosition) => {
+
+        var rules = this.state.rules;
+
+        var element = rules.splice(oldPosition, 1)[0];
+
+        rules.splice(newPosition, 0, element);
+
+        this.setState({ rules: rules });
+
     }
 
     /**
@@ -204,7 +285,7 @@ export default class RulesPanel extends React.Component {
             var rule = this.state.rules[key];
             return (
                 <RuleItem
-                    key={key}
+                    key={Math.random()}
                     action={rule.action}
                     direction={rule.direction}
                     protocol={rule.protocol}
@@ -227,12 +308,12 @@ export default class RulesPanel extends React.Component {
         if (rules.length == 0) {
             rulesElement = (
                 <div style={{color: 'white', margin: 20}}>
-                    There are no rules detected at the moment. Maybe create a new one?
+                    There are no rules detected at the moment. Maybe you need create a new one...
                 </div>
             );
         } else {
             rulesElement = (
-                <ul className='rules-list' id='sortable'>
+                <ul ref='rules_list' className='rules-list' id='sortable'>
                     {rules}
                 </ul>
             );
@@ -246,6 +327,7 @@ export default class RulesPanel extends React.Component {
                 <div className='rules-action-bar white grey darken-3-text'>
                     <div>RULES</div>
                     <ul>
+                        <li data-position='top' ref='trash' data-tooltip='Discard changes' onClick={this.handleDiscardChanges}><Icon>delete</Icon></li>
                         <li data-position='top' data-tooltip='Flush rules' onClick={this.handleFlush}><Icon>backup</Icon></li>
                         <li data-position='top' data-tooltip='Add a rule' onClick={this.handleAddRule}><Icon>add_circle</Icon></li>
                     </ul>
@@ -261,16 +343,6 @@ export default class RulesPanel extends React.Component {
                 </div>
 
                 <RuleEditor modal_id="rule_editor" ref="editor" />
-
-                {/*
-                <Modal
-                    id='modal'
-                    headerColor={this.state.modal.headerColor}
-                    title={this.state.modal.title}
-                    content={ <RuleForm ref='rule_form' formData={this.state.modal.data} submitCallback={this.handleFormAction} disabled={this.state.modal.disabled} /> }
-                    buttons={this.state.modal.buttons}
-                />
-                */}
 
             </div>
         );

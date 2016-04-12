@@ -1,11 +1,12 @@
 /**
  * Imports
  */
-import React        from 'react';
-import CustomSwitch from 'components/composition/custom_switch'
-import RadioInput   from 'components/composition/radio_input'
-import CheckInput   from 'components/composition/check_input'
-import { Input }    from 'react-materialize';
+import React          from 'react';
+import CustomSwitch   from 'components/composition/custom_switch'
+import RadioInput     from 'components/composition/radio_input'
+import CheckInput     from 'components/composition/check_input'
+import { Input }      from 'react-materialize';
+import TextInput      from 'components/composition/text_input'
 import { RulesStore } from 'data/rules'
 
 /**
@@ -61,15 +62,51 @@ export default class RuleEditor extends React.Component {
         };
     }
 
+    handleTextInputChange = (name) => {
+        return (e) => {
+            var obj = {};
+            obj[name] = e.target.value;
+            this.setState(obj);
+        }
+    }
+
+    /**
+     * Changing name on state
+     */
+    handleNameInput = (e) => {
+        this.setState({ name: e.target.value });
+    }
+
+    /**
+     * Return form state
+     */
+    getData = () => {
+
+        return {
+            name: this.state.name,
+            action: this.state.action,
+            protocol: this.state.protocol,
+            direction: this.state.direction,
+            srcaddr_type: this.state.srcaddr_type,
+            srcaddr_min: this.state.srcaddr_min,
+            srcaddr_max: this.state.srcaddr_max,
+            srcport_type: this.state.srcport_type,
+            srcport_min: this.state.srcport_min,
+            srcport_max: this.state.srcport_max,
+            dstaddr_type: this.state.dstaddr_type,
+            dstaddr_min: this.state.dstaddr_min,
+            dstaddr_max: this.state.dstaddr_max,
+            dstport_type: this.state.dstport_type,
+            dstport_min: this.state.dstport_min,
+            dstport_max: this.state.dstport_max
+        }
+
+    }
+
     /**
      * Render source address
      */
     renderSourceAddress() {
-
-        var attrs={};
-        if (!this.state.editable) {
-            attrs['disabled'] = 'disabled';
-        }
 
         switch (this.state.srcaddr_type) {
             case 'any':
@@ -78,13 +115,13 @@ export default class RuleEditor extends React.Component {
                 );
             case 'single':
                 return (
-                    <Input {...attrs} ref="srcaddr_start" s={12} label='Address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                    <TextInput disabled={!this.state.editable} value={this.state.srcaddr_min} onChange={this.handleTextInputChange('srcaddr_min')} ref="srcaddr_min" s={12} label='Address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
                 );
             case 'range':
                 return (
                     <div>
-                        <Input {...attrs} ref="srcaddr_start" s={12} label='Start address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
-                        <Input {...attrs} ref="srcaddr_end" s={12} label='Final address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                        <TextInput disabled={!this.state.editable} value={this.state.srcaddr_min} onChange={this.handleTextInputChange('srcaddr_min')} ref="srcaddr_min" s={12} label='Start address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                        <TextInput disabled={!this.state.editable} value={this.state.srcaddr_max} onChange={this.handleTextInputChange('srcaddr_max')} ref="srcaddr_max"   s={12} label='Final address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
                     </div>
                 );
             default:
@@ -98,11 +135,6 @@ export default class RuleEditor extends React.Component {
      */
     renderDestinationAddress() {
 
-        var attrs={};
-        if (!this.state.editable) {
-            attrs['disabled'] = 'disabled';
-        }
-
         switch (this.state.dstaddr_type) {
             case 'any':
                 return (
@@ -110,13 +142,13 @@ export default class RuleEditor extends React.Component {
                 );
             case 'single':
                 return (
-                    <Input {...attrs} ref="dstaddr_start" s={12} label='Address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                    <TextInput disabled={!this.state.editable} value={this.state.dstaddr_min} onChange={this.handleTextInputChange('dstaddr_min')} ref="dstaddr_min" s={12} label='Address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
                 );
             case 'range':
                 return (
                     <div>
-                        <Input {...attrs} ref="dstaddr_start" s={12} label='Start address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
-                        <Input {...attrs} ref="dstaddr_end" s={12} label='Final address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                        <TextInput disabled={!this.state.editable} value={this.state.dstaddr_min} onChange={this.handleTextInputChange('dstaddr_min')} ref="dstaddr_min" s={12} label='Start address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
+                        <TextInput disabled={!this.state.editable} value={this.state.dstaddr_max} onChange={this.handleTextInputChange('dstaddr_max')} ref="dstaddr_max" s={12} label='Final address' pattern='[0-9(4)\.0-9(4)\.0-9(4)\.0-9(4)]+' />
                     </div>
                 );
             default:
@@ -130,11 +162,6 @@ export default class RuleEditor extends React.Component {
      */
     renderSourcePort() {
 
-        var attrs={};
-        if (!this.state.editable) {
-            attrs['disabled'] = 'disabled';
-        }
-
         switch (this.state.srcport_type) {
             case 'any':
                 return (
@@ -142,13 +169,13 @@ export default class RuleEditor extends React.Component {
                 );
             case 'single':
                 return (
-                    <Input {...attrs} ref="srcport_start" s={12} label='Port number' type='number'/>
+                    <TextInput disabled={!this.state.editable} value={this.state.srcport_min} onChange={this.handleTextInputChange('srcport_min')} ref="srcport_min" s={12} label='Port number' type='number' />
                 );
             case 'range':
                 return (
                     <div>
-                        <Input {...attrs} ref="srcport_start" s={12} label='First port' type='number'/>
-                        <Input {...attrs} ref="srcport_end" s={12} label='Final port' type='number'/>
+                        <TextInput disabled={!this.state.editable} value={this.state.srcport_min} onChange={this.handleTextInputChange('srcport_min')} ref="srcport_min" s={12} label='Initial port' type='number' />
+                        <TextInput disabled={!this.state.editable} value={this.state.srcport_max} onChange={this.handleTextInputChange('srcport_max')} ref="srcport_max"   s={12} label='Final port'   type='number' />
                     </div>
                 );
             default:
@@ -162,11 +189,6 @@ export default class RuleEditor extends React.Component {
      */
     renderDestinationPort() {
 
-        var attrs={};
-        if (!this.state.editable) {
-            attrs['disabled'] = 'disabled';
-        }
-
         switch (this.state.dstport_type) {
             case 'any':
                 return (
@@ -174,13 +196,13 @@ export default class RuleEditor extends React.Component {
                 );
             case 'single':
                 return (
-                    <Input {...attrs} ref="dstport_start" s={12} label='Port number' type='number'/>
+                    <TextInput disabled={!this.state.editable} value={this.state.dstport_min} onChange={this.handleTextInputChange('dstport_min')} ref="dstport_min" s={12} label='Port number' type='number' />
                 );
             case 'range':
                 return (
                     <div>
-                        <Input {...attrs} ref="dstport_start" s={12} label='First port' type='number'/>
-                        <Input {...attrs} ref="dstport_end" s={12} label='Final port' type='number'/>
+                        <TextInput disabled={!this.state.editable} value={this.state.dstport_min} onChange={this.handleTextInputChange('dstport_min')} ref="dstport_min" s={12} label='Initial port' type='number' />
+                        <TextInput disabled={!this.state.editable} value={this.state.dstport_max} onChange={this.handleTextInputChange('dstport_max')} ref="dstport_max" s={12} label='Final port'   type='number' />
                     </div>
                 );
             default:
@@ -250,7 +272,7 @@ export default class RuleEditor extends React.Component {
 
                         <div className='config-wrapper'>
                             <div className='cfg-item'>
-                                <Input {...attrs} ref="name" s={12} label='Rule name' type='text'/>
+                                <TextInput {...attrs} ref="name" s={12} label='Rule name' value={this.state.name} onChange={this.handleNameInput} />
                             </div>
                         </div>
 
