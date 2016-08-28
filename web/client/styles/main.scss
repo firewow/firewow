@@ -36,19 +36,41 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+    overflow-x: hidden;
+}
+
 /**
  * Firewow Logo
  */
-.firewow-logo {
-  position: relative;
-  top: -50px;
-  margin: 0 auto;
-  width: 411px;
-  height: 112px;
-  background-image: url('../images/logo.png');
-  background-size: 411px 112px;
+.logoWrapper {
+    border-radius: 0 0;
+    padding: 15px;
+    width: 110%;
+    margin-left: -5%;
 
-  @include transition(.3s);
+    -moz-transform: rotate(3deg);
+    -webkit-transform: rotate(3deg);
+    -o-transform: rotate(3deg);
+    -ms-transform: rotate(3deg);
+    transform: rotate(3deg);
+
+    .firewow-logo {
+      position: relative;
+      margin: 0 auto;
+      width: 411px;
+      height: 112px;
+      background-image: url('../images/logo.png');
+      background-size: 411px 112px;
+
+      -moz-transform: rotate(-3deg);
+      -webkit-transform: rotate(-3deg);
+      -o-transform: rotate(-3deg);
+      -ms-transform: rotate(-3deg);
+      transform: rotate(-3deg);
+
+      @include transition(.3s);
+    }
 }
 
 /**
@@ -97,29 +119,100 @@
     background-color: #da7eff !important;
 }
 
+.full-height {
+    height: 85vh;
+}
+
+.menu {
+    display: block;
+    -moz-transform: rotate(-3deg);
+    -webkit-transform: rotate(-3deg);
+    -o-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    transform: rotate(-3deg);
+
+    .menu-divider {
+        margin: 0 auto;
+        text-align: center;
+
+        .menu-item {
+            padding: 5px;
+            text-transform: uppercase;
+            letter-spacing: .1rem;
+            cursor: pointer;
+            display: inline-block;
+            width: 20vh;
+
+            p:after {
+                display:block;
+                content: '';
+                border-bottom: solid 3px #019fb6;
+                transform: scaleX(0);
+                transition: transform 250ms ease-in-out;
+            }
+
+            p:hover:after { transform: scaleX(1); }
+
+            @include transition(.3s);
+        }
+
+        .menu-item:hover {
+            color: #ff5722;
+        }
+
+        .horizontal {
+            flex: 1 0;
+        }
+
+        .horizontal {
+            margin: 5px 5px 5px 5px;
+        }
+    }
+}
+
 /**
  * Responsive
  */
 
 /* SMARTPHONES */
 @media only screen and (min-width: 320px) and (max-width: 479px) {
-    .firewow-logo {
-        position: relative;
-        top: 50px;
-        margin: 0 auto;
-        width: 205px;
-        height: 55.863746959px;
-        background-size: 205px 55.863746959px;
+    .logoWrapper {
+        .firewow-logo {
+            position: relative;
+            margin: 0 auto;
+            width: 205px;
+            height: 55.863746959px;
+            background-size: 205px 55.863746959px;
+        }
+    }
+
+    .menu {
+        .menu-divider {
+            .menu-item {
+                width: 100%;
+                display: block;
+            }
+        }
     }
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px)  {
-    .firewow-logo {
-        position: relative;
-        top: 50px;
-        margin: 0 auto;
-        width: 205px;
-        height: 55.863746959px;
-        background-size: 205px 55.863746959px;
+    .logoWrapper {
+        .firewow-logo {
+            position: relative;
+            margin: 0 auto;
+            width: 205px;
+            height: 55.863746959px;
+            background-size: 205px 55.863746959px;
+        }
+    }
+
+    .menu {
+        .menu-divider {
+            .menu-item {
+                width: 100%;
+                display: block;
+            }
+        }
     }
 }

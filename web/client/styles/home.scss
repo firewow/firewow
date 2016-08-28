@@ -21,56 +21,6 @@
     top: 0;
     z-index: 10;
     cursor: default;
-
-    .welcome {
-        color: white;
-        text-transform: capitalize;
-        letter-spacing: .2rem;
-    }
-
-    .menu {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: center;
-        align-items: stretch;
-
-        .menu-divider {
-            flex-grow: 1;
-
-            .menu-item {
-                padding: 60px;
-                color: white;
-                text-transform: uppercase;
-                letter-spacing: .1rem;
-                cursor: pointer;
-
-                @include transition(.3s);
-            }
-
-            .menu-item:hover {
-                color: #ff5722;
-            }
-
-            .vertical {
-                flex-basis: 10;
-                height: 100%;
-                margin: 5px;
-                line-height: 12em;
-            }
-
-            .horizontal {
-                flex: 1 0;
-            }
-
-            .horizontal:first-child {
-                margin: 5px 5px 5px 0px;
-            }
-
-            .horizontal:nth-child(2) {
-                margin: 5px 5px -5px 0px;
-            }
-        }
-    }
 }
 
 /**

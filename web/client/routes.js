@@ -14,10 +14,7 @@ import About                         from 'components/pages/about'
  */
 export default (
     <Route component={Application} path="/">
-        <IndexRoute component={Login} />
-
-        <Route component={Home}        path="home" />
-        <Route component={Rules}       path="rules" />
+        <IndexRoute component={Rules} />
         <Route component={TrafficView} path="traffic" />
         <Route component={About}       path="about" />
     </Route>

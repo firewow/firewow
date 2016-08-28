@@ -2,6 +2,7 @@
  * Imports
  */
 import { Button, Icon, Row, Input } from 'react-materialize'
+import MenuRenderer                 from 'components/composition/menu_renderer'
 import { Sparklines, SparklinesLine, SparklinesSpots  } from 'react-sparklines'
 
 import appHistory from 'apphistory'
@@ -34,7 +35,7 @@ export default class TrafficView extends React.Component {
      * Go back
      */
     handleGoBack = () => {
-        appHistory.push('/home');
+        appHistory.push('/');
     }
 
     /**
@@ -81,16 +82,20 @@ export default class TrafficView extends React.Component {
      */
     render() {
         return (
-            <div className='grey darken-3 noselect valign-wrapper traffic'>
-                <Row className='container row valign center padding-1x'>
-                    <div className='valign firewow-logo'></div>
-                    <div className='white z-depth-1'>
-                        <h4>Traffic View</h4>
-                        <RTChart
-                            chart={{size : { height: 280 }, tooltip: { show: false }}}
-                            flow={{duration: 0}}
-                            fields={this.state.fields}
-                            data={this.state.data} />
+            <div className='white noselect'>
+
+                <MenuRenderer/>
+
+                <Row>
+                    <div className="traffic container center">
+                        <div className='white'>
+                            <h4>Traffic View</h4>
+                            <RTChart
+                                chart={{size : { height: 280 }, tooltip: { show: false }}}
+                                flow={{duration: 0}}
+                                fields={this.state.fields}
+                                data={this.state.data} />
+                        </div>
                     </div>
                 </Row>
             </div>

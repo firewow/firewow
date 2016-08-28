@@ -57,31 +57,19 @@ export default class Home extends React.Component {
      */
     render() {
         return (
-            <div className="grey darken-3 noselect valign-wrapper home">
+            <div className="white noselect home">
 
-                <Row className="container row valign center padding-1x">
+                <div className="grey darken-3 logoWrapper">
+                    <div className="firewow-logo"></div>
 
-                    <div className="valign firewow-logo"></div>
-
-                    <p className="welcome">Logged as {this.state.username}</p>
-
-                    <Menu className="valign row">
+                    <Menu className="">
                         <MenuDivider>
-                            <MenuItem orientation="vertical"
-                                    size="half"
-                                    text="about"
-                                    position="left"
-                                    onClick={this.handleGoToAbout}
-                                    color="deep-purple"/>
-                        </MenuDivider>
-
-                        <MenuDivider>
-                            <MenuItem orientation="horizontal" size="half" text="rules management" position="right" onClick={this.handleGoToRulesManagement} color="deep-purple"/>
-                            <MenuItem orientation="horizontal" size="half" text="traffic view"     position="right" onClick={this.handleGoToTrafficView} color="deep-purple"/>
+                            <MenuItem orientation="horizontal" size="half" text="about" position="left" onClick={this.handleGoToAbout} color="white-text text-darken-3"/>
+                            <MenuItem orientation="horizontal" size="half" text="rules management" position="left" onClick={this.handleGoToRulesManagement} color="white-text text-darken-3"/>
+                            <MenuItem orientation="horizontal" size="half" text="traffic view"     position="left" onClick={this.handleGoToTrafficView} color="white-text text-darken-3"/>
                         </MenuDivider>
                     </Menu>
-
-                </Row>
+                </div>
             </div>
         );
     }
