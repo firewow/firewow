@@ -2,9 +2,10 @@ import 'colors'
 import fs from 'fs'
 import db from './database.js'
 import { exec } from 'child_process'
+import kernel from './kernel.js'
 
 export default function(app) {
-    
+
     /**
      * Rules list
      */
@@ -121,14 +122,7 @@ export default function(app) {
 
         fs.writeFileSync('/etc/firewow/rules', data);
 
-        exec(__dirname + '/../../kernel/reload.sh',
-            function (error, stdout, stderr) {
-                console.log(stdout);
-                console.log(stderr);
-                if (error !== null) {
-                    console.log(error);
-                }
-            });
+        kernel.reload();
 
         response.json(db("rules").toJSON());
 

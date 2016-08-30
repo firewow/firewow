@@ -23,6 +23,7 @@
 #include "utils.h"
 #include "filters.h"
 #include "rules.h"
+#include "nat.h"
 
 /**
  * Module initialization
@@ -39,9 +40,14 @@ int fwow_init(void)
     if (fwow_filters_initialize())
         goto clean2;
 
+    if (fwow_nat_initialize())
+        goto clean3;
+
 	debug("initialization finished");
 	return 0;
 
+clean3:
+    fwow_nat_cleanup();
 clean2:
     fwow_filters_cleanup();
 clean1:
@@ -60,6 +66,7 @@ void fwow_exit(void)
 	debug("cleanup started");
 	fwow_filters_cleanup();
     fwow_rules_cleanup();
+    fwow_nat_cleanup();
 	debug("cleanup finished");
 }
 

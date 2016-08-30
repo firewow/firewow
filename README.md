@@ -11,6 +11,7 @@ It was developed and tested on a Ubuntu 14.04 LTS machine.
 
 - GCC compiler
 - Linux headers
+- *xtables-addons-dkms* package
 - Node.js
 - NPM
 
@@ -18,6 +19,7 @@ It was developed and tested on a Ubuntu 14.04 LTS machine.
 
 - Kernel Module (Netfilter)
 - Web Admin (Node.js + ReactJS)
+- Web Proxy (Filter)
 
 # License
 

@@ -48,7 +48,9 @@ import webpackConfig from '../../webpack.config'
 import db from './database.js'
 import routes from './routes.js'
 import monitor from './monitor.js'
+import proxy from './proxy.js'
 import bodyParser from 'body-parser'
+import kernel from './kernel.js'
 
 var development = false;
 if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
@@ -121,10 +123,26 @@ app.use(function(request, response, next) {
 });
 
 /**
+ * Instance & reload
+ */
+
+var port_admin = process.env.FWOW_PORT || 8000;
+var port_proxy = port_admin + 1;
+var port_void = port_proxy + 1;
+
+fs.writeFileSync('/etc/firewow/instance',
+    process.pid + "\t" + port_proxy + "\n"
+);
+
+kernel.reload();
+
+/**
  * Listen
  */
-server.listen(process.env.FWOW_PORT || 8000, function() {
-    console.log('');
-	console.log(('> firewow admin started ' + (development ? "(development)" : "(production)")).green);
-    console.log('');
+server.listen(port_admin, function() {
+	console.log(('> firewow admin server started on port ' + port_admin).green);
+});
+
+proxy.listen(port_proxy, port_void, function(name, port) {
+    console.log(('> firewow ' + name + ' started on port ' + port).green);
 });
