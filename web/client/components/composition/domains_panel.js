@@ -60,6 +60,7 @@ export default class DomainsPanel extends React.Component {
         };
 
         this.refs.editor.open($.extend(emptyDomain, {
+            name: '',
             color: 'green',
             title: 'New domain',
             editable: true,

@@ -17,7 +17,7 @@ export default class DomainItem extends React.Component {
         $(this.refs.item).hover(function() {
             bar.css('display', 'block');
             bar.clearQueue().stop().animate({
-                width: 100,
+                width: 90,
                 opacity: 1
             });
         }, function() {
