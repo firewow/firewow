@@ -37,6 +37,9 @@ unsigned int fwow_filter_in(
     case FWOW_RULE_ACTION_ACCEPT:
         return NF_ACCEPT;
     }
+	if ((ret & NF_QUEUE) == NF_QUEUE) {
+		return ret;
+	}
 	return NF_ACCEPT;
 }
 
@@ -59,6 +62,9 @@ unsigned int fwow_filter_out(
     case FWOW_RULE_ACTION_ACCEPT:
         return NF_ACCEPT;
     }
+	if ((ret & NF_QUEUE) == NF_QUEUE) {
+		return ret;
+	}
 	return NF_ACCEPT;
 }
 

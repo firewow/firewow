@@ -11,7 +11,7 @@ It was developed and tested on a Ubuntu 14.04 LTS machine.
 
 - GCC compiler
 - Linux headers
-- *xtables-addons-dkms* package
+- *libnetfilter-queue-dev* package
 - Node.js
 - NPM
 

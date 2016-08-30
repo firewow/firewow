@@ -81,6 +81,12 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
     struct tcphdr* tcp = NULL;
     struct udphdr* udp = NULL;
 
+    unsigned char* payload = NULL;
+    unsigned char* tail = NULL;
+    unsigned char* it = NULL;
+
+    uint64_t payload_len = 0;
+
     int action = NF_ACCEPT;
     int i = 0;
 
@@ -110,6 +116,10 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
 
     srcaddr = htonl(ip->saddr);
     dstaddr = htonl(ip->daddr);
+
+    ///
+    /// Packet test
+    ///
 
     switch (ip->protocol)
     {
@@ -157,17 +167,27 @@ unsigned int fwow_rules_filter(struct sk_buff* skb, int direction)
     ///
     ///
 
-    debug("--------------------------");
+
+    if (dstport == 80 && ip->protocol == IPPROTO_TCP) {
+        payload = (unsigned char*)((unsigned char*)tcp + (tcp->doff * 4));
+        tail = skb_tail_pointer(skb);
+        payload_len = (uint64_t)(tail) - (uint64_t)(payload);
+        if (payload_len > 0)
+        {
+            debug("queueing http traffic for analysis.");
+            return NF_QUEUE_NR(1);
+        }
+    }
+
+    if ((srcport == 53 || dstport == 53) && ip->protocol == IPPROTO_UDP)
+    {
+        debug("queueing dns traffic for analysis.");
+        return NF_QUEUE_NR(2);
+    }
 
     //down(&fwow_rules_list_lock);
 
     i = 0;
-
-    debugf("[%u] " FWOW_IP_FORMAT ":%u -> " FWOW_IP_FORMAT ":%u",
-        ip->protocol,
-        FWOW_IP_VALUE(srcaddr), srcport,
-        FWOW_IP_VALUE(dstaddr), dstport
-    );
 
     list_for_each_entry(r, &fwow_rules_list, list)
     {

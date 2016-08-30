@@ -1,8 +1,8 @@
-import './permissions'
+require('./permissions');
 
-import low from 'lowdb'
-import storage from 'lowdb/file-sync'
-import fs from 'fs'
+var low = require('lowdb');
+var storage = require('lowdb/file-sync');
+var fs = require('fs');
 
 var databasePath = '/etc/firewow/database';
 
@@ -15,4 +15,4 @@ try {
     process.exit(-1);
 }
 
-export default db;
+module.exports = db;

@@ -1,4 +1,4 @@
-import fs from 'fs'
+var fs = require('fs');
 
 var databaseDirectory   = '/etc/firewow';
 var rulesPath           = '/etc/firewow/rules';
