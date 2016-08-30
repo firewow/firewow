@@ -77,6 +77,8 @@ if (development) {
 	}));
 }
 
+console.log('');
+
 /**
  * User check
  */
@@ -90,6 +92,9 @@ console.log('> %d users loaded'.blue, users);
 
 var rules = db('rules').size();
 console.log('> %d rules loaded'.blue, rules);
+
+var domains = db('domains').size();
+console.log('> %d domains loaded'.blue, domains);
 
 /**
  * Serves static files
@@ -134,5 +139,7 @@ var port_admin = process.env.FWOW_PORT || 8000;
 server.listen(port_admin, function() {
 	console.log(('> firewow admin server started on port ' + port_admin).green);
 });
+
+console.log('');
 
 kernel.reload();

@@ -84,6 +84,7 @@
     "url-loader": "^0.5.7",
     "webpack": "^1.12.14",
     "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.10.0"
+    "webpack-hot-middleware": "^2.10.0",
+    "wildcard": "^1.1.2"
   }
 }

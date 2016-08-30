@@ -1,0 +1,573 @@
+/**
+ * SCSS Document
+ * Created: 2016-03-29
+ * Login screen style
+ * @author Augusto Russo
+ */
+
+/**
+ * Imports
+ */
+@import 'mixins.scss';
+
+/**
+ * Rules
+ */
+.domains {
+    cursor: default;
+    overflow: auto;
+    margin-top: 5%;
+
+   .modal {
+
+        overflow: hidden;
+
+       .modal-header {
+          position: absolute;
+          top: 0;
+          color: white;
+          height: 56px;
+          width: 100%;
+          text-transform: uppercase;
+          letter-spacing: .2rem;
+          padding-top: 0.7em;
+          padding-left: 1em;
+          text-align: left;
+       }
+
+       .modal-content {
+          form {
+             padding: 0px 55px 40px 55px;
+
+             h4 {
+               text-align: left;
+               text-transform: uppercase;
+               letter-spacing: .2rem;
+               font-size: 1em;
+               padding-left: 10px;
+               margin-bottom: 0;
+             }
+
+             h5 {
+               text-align: left;
+               text-transform: uppercase;
+               letter-spacing: .2rem;
+               font-size: .8em;
+               padding-left: 10px;
+             }
+
+             .sep {
+               border: 1px solid #E2E2E2;
+               margin-bottom: 15px 0 15px 0;
+               width: 100%;
+               float: left;
+             }
+
+             .cfg-item {
+               padding: 0 0 0 0;
+               overflow: auto; 
+             }
+          }
+
+          .config-wrapper {
+              padding: 15px 0px 0px 0px;
+              display: block;
+              overflow: auto;
+              width: 100%;
+          }
+       }
+
+       &.modal-fixed-header {
+
+         padding: 0;
+         height: 70%;
+
+         .modal-content {
+              position: absolute;
+              height: calc(100% - 56px);
+              max-height: 100%;
+              width: 100%;
+              overflow-y: auto;
+              margin-top: 56px;
+         }
+
+       }
+   }
+
+   .app-loader {
+       position: relative;
+
+       .done {
+           color: #4CAF50;
+           float: right;
+           margin-top: -70px;
+           border-radius: 100%;
+           overflow: hidden;
+           padding: 7px;
+           background-color: white;
+           height: 50px;
+           width: 50px;
+
+           i {
+               font-size: 2em;
+               line-height: 1.2em;
+           }
+       }
+   }
+
+    .domains-panel {
+        position: relative;
+        display: block;
+
+        .domains-action-bar {
+            max-height: 50px;
+            height: 50px;
+            padding: 5px;
+
+            border-style: solid;
+            border-color: #e0e0e0;
+            border-width: 1px;
+
+            ul {
+                display: inline-block;
+                float: right;
+                margin: 0;
+                height: 50px;
+                padding: 5px;
+            }
+
+            ul li {
+              display: inline-block;
+              margin: 0px 10px 0 10px;
+            }
+
+            ul li i {
+                @include transition(.3s);
+                cursor: pointer;
+                font-size: 2em;
+            }
+
+            ul li i:hover {
+                color: #9e9e9e;
+            }
+
+            div {
+                float: left;
+                height: 50px;
+                text-align: center;
+                line-height: 2.5em;
+            }
+        }
+
+        .domains-list-wrapper {
+
+            border-style: solid;
+            border-color: #e0e0e0;
+            padding: 5px;
+            min-height: 500px;
+            max-height: 500px;
+            border-width: 0px 1px 1px 1px;
+
+            .domains-list {
+                margin: 0;
+                width: 100%;
+                min-height: 500px;
+                max-height: 500px;
+                overflow: auto;
+
+                li {
+                    max-height: 50px;
+                    height: 50px;
+                    padding: 5px 5px 5px 14px;
+                    color: #263238;
+                    text-align: left;
+                    line-height: 2.7em;
+                    margin: 2px 2px 8px 2px;
+                    overflow: hidden;
+
+                    &.accept {
+                        background-color: white;
+                        position: relative;
+                        border-bottom: 5px solid #4CAF50;
+                        @include transition(.5s);
+                    }
+
+                    &.accept:hover {
+                        border-color: #CDDC39;
+                    }
+
+                    &.drop {
+                        background-color: white;
+                        position: relative;
+                        border-bottom: 5px solid #f44336;
+                        @include transition(.3s);
+                    }
+
+                    &.drop:hover {
+                        border-color: #FF5722;
+                    }
+
+                    .domain-actions {
+                      div {
+                        float: left;
+                      }
+                    }
+
+                    .domain-direction {
+
+                        font-weight: bold;
+                        background-color: #000;
+                        padding: 4px 8px 4px 8px;
+                        color: white;
+                        margin-right: 5px;
+                        text-transform: uppercase;
+                        z-index: 50;
+                        position: relative;
+
+                        &.in {
+                            background-color: #8BC34A;
+                        }
+
+                        &.out {
+                            background-color: rgb(204, 20, 20);
+                        }
+                    }
+
+                    .domain-protocol {
+                        font-weight: bold;
+                        background-color: #FFF;
+                        padding: 4px 8px 4px 8px;
+                        color: #000;
+                        margin-right: 5px;
+                        text-transform: uppercase;
+                        z-index: 50;
+                        position: relative;
+
+                        &.tcp {
+                            background-color: #2196F3 !important;
+                            color: white;
+                        }
+
+                        &.udp {
+                            background-color: rgb(178, 20, 204) !important;
+                            color: white;
+                        }
+
+                        &.both {
+                            background-color: rgb(20, 171, 204) !important;
+                            color: white;
+                        }
+                    }
+
+                    .domain-name {
+                        margin-left: 8px;
+                    }
+
+                    &.drop .domain-actions {
+                        background-color: #FF5722;
+                        float: right;
+                        height: 50px;
+                        padding: 8px;
+                        line-height: 3.2em;
+                        margin-top: -5px;
+                        margin-right: -5px;
+                        display: flex;
+                        align-items: center;
+
+                        i {
+                            margin: 0 5px 0 5px;
+                            cursor: pointer;
+                            @include transition(.3s);
+                        }
+
+                        i:hover {
+                            -ms-transform: rotate(360deg); /* IE 9 */
+                            -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+                            transform: rotate(360deg);
+
+                            color: #455A64;
+                        }
+                    }
+
+                    &.accept .domain-actions {
+                        background-color: #CDDC39;
+                        float: right;
+                        height: 50px;
+                        padding: 8px;
+                        line-height: 3.2em;
+                        margin-top: -5px;
+                        margin-right: -5px;
+                        display: flex;
+                        align-items: center;
+
+                        i {
+                            margin: 0 5px 0 5px;
+                            cursor: pointer;
+                            @include transition(.3s);
+                        }
+
+                        i:hover {
+                            -ms-transform: rotate(360deg); /* IE 9 */
+                            -webkit-transform: rotate(360deg); /* Chrome, Safari, Opera */
+                            transform: rotate(360deg);
+
+                            color: #455A64;
+                        }
+                    }
+                }
+            }
+        }
+
+        .domains-reminder {
+            color: white;
+            text-align: left;
+            padding: 10px;
+
+            span {
+              display: block;
+            }
+        }
+
+        .aligner {
+            padding: 20px 20px 20px 10px;
+
+            span {
+              float: left;
+              margin: 0px 10px 0px 10px;
+
+              label {
+                color: gray;
+              }
+            }
+
+            .lbl {
+              text-transform: uppercase;
+              float: left;
+              margin: 0px 20px 0px 0px;
+              font-size: 1.2em;
+              color: black;
+            }
+        }
+
+        .domain-policy {
+            padding: 0 0 20px 0;
+
+            .custom-switch-label {
+              color: black;
+              font-size: 1.2em;
+            }
+        }
+
+    }
+}
+
+.toasted-loader {
+  border-radius: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+
+  .loader-text {
+      color: #616161;
+      white-space: nowrap;
+      padding-left: 10px;
+  }
+
+  .preloader-wrapper {
+      border-radius: 100%;
+      width: 25px;
+      height: 25px;
+  }
+}
+
+.toasted-done {
+
+  border-radius: 100%;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+
+  .loader-text {
+      color: #616161;
+      white-space: nowrap;
+      padding-left: 10px;
+  }
+
+  i {
+    color: #4caf50;
+  }
+
+}
+
+/**
+ * Responsive
+ */
+
+/* SMARTPHONES */
+@media only screen and (max-height: 700px) {
+    .domains {
+
+        overflow: auto;
+
+        .domains-panel {
+            margin-top: 50px;
+
+            .domains-list {
+
+              li {
+                  font-size: 1em;
+                  overflow: hidden;
+                  position: relative;
+              }
+
+              .domain-actions {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+              }
+
+            }
+
+            .modal {
+
+                .modal-header {
+                    h4 {
+                        font-size: 1em;
+                        line-height: 200%;
+                    }
+                }
+
+                .modal-content {
+                    form {
+                        padding: 0px;
+                        font-size: 0.7em;
+                    }
+                }
+
+                .modal-footer {
+                    a {
+                        font-size: 0.8em;
+                        padding: 1em;
+                    }
+                }
+            }
+
+        }
+
+    }
+}
+
+
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+
+    .domains {
+
+        overflow: auto;
+
+        .firewow-logo {
+            margin-top: -50px;
+        }
+
+        .domains-panel {
+            margin-top: 100px;
+
+            .domains-list {
+
+              li {
+                  font-size: 1em;
+                  overflow: hidden;
+                  position: relative;
+              }
+
+              .domain-actions {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+              }
+
+            }
+
+            .modal {
+
+                .modal-header {
+                    h4 {
+                        font-size: 1em;
+                        line-height: 200%;
+                    }
+                }
+
+                .modal-content {
+                    form {
+                        padding: 0px;
+                        font-size: 0.7em;
+                    }
+                }
+
+                .modal-footer {
+                    a {
+                        font-size: 0.8em;
+                        padding: 1em;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}
+
+@media only screen and (min-width: 480px) and (max-width: 767px)  {
+
+    .domains {
+
+        overflow: auto;
+
+        .domains-panel {
+            margin-top: 50px;
+
+            .domains-list {
+
+              li {
+                  font-size: 1em;
+                  overflow: hidden;
+                  position: relative;
+              }
+
+              .domain-actions {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+              }
+
+            }
+
+            .modal {
+
+                .modal-header {
+                    h4 {
+                        font-size: 1em;
+                        line-height: 200%;
+                    }
+                }
+
+                .modal-content {
+                    form {
+                        padding: 0px;
+                        font-size: 0.7em;
+                    }
+                }
+
+                .modal-footer {
+                    a {
+                        font-size: 0.8em;
+                        padding: 1em;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+}

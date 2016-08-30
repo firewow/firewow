@@ -28,7 +28,7 @@ export default class MenuRenderer extends React.Component {
     }
 
     handleGoToRulesManagement = () => {
-        appHistory.push("/");
+        appHistory.push("/rules");
     }
 
     handleGoToTrafficView = () => {
@@ -37,6 +37,10 @@ export default class MenuRenderer extends React.Component {
 
     handleGoToAbout = () => {
         appHistory.push("/about");
+    }
+
+    handleGoToDomains = () => {
+        appHistory.push("/domains");
     }
 
     componentDidMount() {
@@ -53,8 +57,9 @@ export default class MenuRenderer extends React.Component {
 
                 <Menu className="">
                     <MenuDivider>
-                        <MenuItem orientation="horizontal" size="half" text="rules management" position="left" onClick={this.handleGoToRulesManagement} color="white-text text-darken-3"/>
-                        <MenuItem orientation="horizontal" size="half" text="traffic view"     position="left" onClick={this.handleGoToTrafficView} color="white-text text-darken-3"/>
+                        <MenuItem orientation="horizontal" size="half" text="domains" position="left" onClick={this.handleGoToDomains} color="white-text text-darken-3"/>
+                        <MenuItem orientation="horizontal" size="half" text="rules" position="left" onClick={this.handleGoToRulesManagement} color="white-text text-darken-3"/>
+                        <MenuItem orientation="horizontal" size="half" text="traffic"     position="left" onClick={this.handleGoToTrafficView} color="white-text text-darken-3"/>
                         <MenuItem orientation="horizontal" size="half" text="about" position="left" onClick={this.handleGoToAbout} color="white-text text-darken-3"/>
                     </MenuDivider>
                 </Menu>

@@ -3,6 +3,7 @@ import fs from 'fs'
 import db from './database.js'
 import { exec } from 'child_process'
 import kernel from './kernel.js'
+import queue from './queue.js'
 
 export default function(app) {
 
@@ -128,4 +129,29 @@ export default function(app) {
 
     });
 
+    /**
+     * Domains list
+     */
+    app.get('/domains/fetch', function(request, response) {
+        response.json(db("domains").toJSON());
+    });
+
+    /**
+     * Domains list
+     */
+    app.post('/domains/flush', function(request, response) {
+
+        if (Array.isArray(request.body)) {
+            delete db.object.domains;
+            db.write();
+            for (var index in request.body) {
+                db("domains").push(request.body[index]);
+            }
+        }
+
+        var domains = db("domains").toJSON();
+        queue.refresh();
+        response.json(db("domains").toJSON());
+
+    });
 }

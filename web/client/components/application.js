@@ -93,12 +93,14 @@ export default class Application extends React.Component {
      * Render
      */
     render() {
+        /*
         if (!this.state.authenticated) {
             return (
                 <Login />
             );
         }
-
+        */
+       
         return (
             <div className="app">
                 {this.props.children}

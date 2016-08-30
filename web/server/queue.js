@@ -6,17 +6,60 @@ var parser = require('http-string-parser');
 var IPv4 = require('./decode/ipv4');
 var DNS = require('./decode/dns');
 
-var blacklist = [];
+/**
+ * Load rules
+ */
+module.domains = [];
+refresh();
 
 /**
  * Domain filter
  */
 function domain_filter(name) {
-    if (name == 'xvideos.com' || name == 'uol.com.br') {
-        return false;
+    name = name.toLowerCase();
+    for (var index in module.domains) {
+        var domain = module.domains[index];
+        if (!domain.test) {
+            continue;
+        }
+        if (domain.test(name)) {
+            return false;
+        }
+        /*
+        var value = domain.value.toLowerCase();
+        if (domain.mode == 'startswith') {
+            if (name.startsWith(value)) {
+                return false;
+            }
+        } else if (domain.mode == 'contains') {
+            if (name.indexOf(value) !== -1) {
+                return false;
+            }
+        } else if (domain.mode == 'endswith') {
+            if (name.endsWith(value)) {
+                return false;
+            }
+        }
+        */
     }
     return true;
 }
+
+/**
+ * Database refresh
+ * @return {[type]} [description]
+ */
+function refresh() {
+    module.domains = [];
+    var domains = db('domains').toJSON();
+    for (var index in domains) {
+        var domain = domains[index];
+        var expr = '^' + domain.name.split("*").join(".*") + '$';
+        module.domains.push(new RegExp(expr));
+    }
+}
+
+module.exports.refresh = refresh;
 
 /**
  * Http handler
@@ -42,7 +85,7 @@ nfq.createQueueHandler(1, 65535, function(nfpacket) {
  * @type {[type]}
  */
 nfq.createQueueHandler(2, 65535, function(nfpacket) {
-    console.log('-----------------------------------------------');
+
     var packet = new IPv4().decode(nfpacket.payload, 0);
     if (packet.payload && packet.payload.data) {
 
